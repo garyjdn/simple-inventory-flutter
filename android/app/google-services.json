@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "822390305726",
+    "firebase_url": "https://inventoryapp-flutter.firebaseio.com",
+    "project_id": "inventoryapp-flutter",
+    "storage_bucket": "inventoryapp-flutter.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:822390305726:android:fb9723308304af6249bfef",
+        "android_client_info": {
+          "package_name": "com.jdncode.inventoryapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "822390305726-d4o6e06jqo8j9ga4s3h2q5fip63ri64a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCxhJhhYYC-gANVNUl5D3MHt9yPEdrSC58"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "822390305726-d4o6e06jqo8j9ga4s3h2q5fip63ri64a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
