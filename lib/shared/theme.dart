@@ -5,7 +5,7 @@ class AppTheme {
   AppTheme._();
 
   static final ThemeData lightTheme = ThemeData(
-    primarySwatch: Colors.purple[900],
+    primarySwatch: Colors.blue,
     scaffoldBackgroundColor: AppColors.background,
     brightness: Brightness.light,
     fontFamily: 'Roboto',
@@ -32,14 +32,14 @@ class AppTheme {
   static final TextStyle _headline1 = TextStyle(
     fontFamily: 'Poppins',
     color: AppColors.typography,
-    fontSize: 20,
+    fontSize: 24,
     fontWeight: FontWeight.w700,
   );
 
   static final TextStyle _headline2 = TextStyle(
     fontFamily: 'Poppins',
     color: AppColors.typography,
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: FontWeight.w600
   );
 
