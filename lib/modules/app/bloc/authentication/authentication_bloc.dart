@@ -44,6 +44,13 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
   }
 
   Stream<AuthenticationState> _loggedIn(LoggedIn event) async* {
+    AuthRepository _authRepository = AuthRepository();
+      if(event.rememberMe) {
+      Map<String, dynamic> cache = {
+        'user': event.user.toMap(),
+      };
+      _authRepository.persistToken(cache);
+    }
     yield AuthenticationSuccess(
       user: event.user
     );
