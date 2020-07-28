@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:inventoryapp/data/data.dart';
 
 class Supplier {
@@ -19,6 +20,15 @@ class Supplier {
       name: map['name'],
       phone: map['phone'],
       address: map['address'],
+    );
+  }
+
+  factory Supplier.fromDocumentSnapshot(DocumentSnapshot ds) {
+    return Supplier(
+      id: ds.documentID,
+      name: ds.data['name'],
+      phone: ds.data['phone'],
+      address: ds.data['address'],
     );
   }
 
