@@ -9,3 +9,8 @@ class LoadSupplierStarted extends SupplierEvent {
   List<Object> get props => [];
   
 }
+
+class DeleteSupplierButtonPressed extends SupplierEvent {
+  @override
+  List<Object> get props => throw UnimplementedError();
+}

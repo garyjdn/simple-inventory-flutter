@@ -40,4 +40,12 @@ class Supplier {
       'address': this.address
     };
   }
+
+  Map<String, dynamic> toDocument() {
+    return {
+      'name': this.name,
+      'phone': this.phone,
+      'address': this.address
+    };
+  }
 }
