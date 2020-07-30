@@ -95,7 +95,7 @@ class TmpStationMain extends StatelessWidget {
                 elevation: 0,
                 child: ListTile(
                   leading: Icon(
-                    FontAwesomeIcons.userCheck,
+                    FontAwesomeIcons.building,
                     color: Color(0xff5a5a5a),
                   ),
                   title: Text(
