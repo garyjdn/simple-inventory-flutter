@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:inventoryapp/modules/modules.dart';
 import 'package:inventoryapp/widgets/widgets.dart';
 
 class TmpDashboard extends StatelessWidget {
@@ -34,29 +35,34 @@ class TmpDashboard extends StatelessWidget {
                     Container(
                       padding: EdgeInsets.all(10),
                       child: Center(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            border: Border.all(color: Colors.white, width: 1.5),
-                            borderRadius: BorderRadius.circular(8)
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Container(
-                                child: Center(
-                                  child: Icon(
-                                    FontAwesomeIcons.userCheck,
-                                  color: Color(0xff5a5a5a),
-                                    size: 36,
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.of(context).pushNamed(SupplierMainScreen.routeName);
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              border: Border.all(color: Colors.white, width: 1.5),
+                              borderRadius: BorderRadius.circular(8)
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Container(
+                                  child: Center(
+                                    child: Icon(
+                                      FontAwesomeIcons.userCheck,
+                                    color: Color(0xff5a5a5a),
+                                      size: 32,
+                                    )
                                   )
+                                ),
+                                SizedBox(height: 12),
+                                Text(
+                                  'Supplier',
                                 )
-                              ),
-                              SizedBox(height: 12),
-                              Text(
-                                'Supplier',
-                              )
-                            ],
+                              ],
+                            ),
                           ),
                         )
                       ),
@@ -78,7 +84,7 @@ class TmpDashboard extends StatelessWidget {
                                   child: Icon(
                                     FontAwesomeIcons.palette,
                                     color: Color(0xff5a5a5a),
-                                    size: 36,
+                                    size: 32,
                                   )
                                 )
                               ),
@@ -106,7 +112,7 @@ class TmpDashboard extends StatelessWidget {
                                   child: Icon(
                                     FontAwesomeIcons.unity,
                                     color: Color(0xff5a5a5a),
-                                    size: 36,
+                                    size: 32,
                                   )
                                 )
                               ),
@@ -134,7 +140,7 @@ class TmpDashboard extends StatelessWidget {
                                   child: Icon(
                                     FontAwesomeIcons.box,
                                     color: Color(0xff5a5a5a),
-                                    size: 36,
+                                    size: 32,
                                   )
                                 )
                               ),
@@ -162,7 +168,7 @@ class TmpDashboard extends StatelessWidget {
                                   child: Icon(
                                     FontAwesomeIcons.angleDoubleDown,
                                     color: Color(0xff5a5a5a),
-                                    size: 36,
+                                    size: 32,
                                   )
                                 )
                               ),
@@ -190,7 +196,7 @@ class TmpDashboard extends StatelessWidget {
                                   child: Icon(
                                     FontAwesomeIcons.angleDoubleUp,
                                     color: Color(0xff5a5a5a),
-                                    size: 36,
+                                    size: 32,
                                   )
                                 )
                               ),
@@ -218,7 +224,7 @@ class TmpDashboard extends StatelessWidget {
                                   child: Icon(
                                     FontAwesomeIcons.exclamationCircle,
                                     color: Color(0xff5a5a5a),
-                                    size: 36,
+                                    size: 32,
                                   )
                                 )
                               ),
@@ -246,7 +252,7 @@ class TmpDashboard extends StatelessWidget {
                                   child: Icon(
                                     FontAwesomeIcons.handHolding,
                                     color: Color(0xff5a5a5a),
-                                    size: 36,
+                                    size: 32,
                                   )
                                 )
                               ),
@@ -274,7 +280,7 @@ class TmpDashboard extends StatelessWidget {
                                   child: Icon(
                                     FontAwesomeIcons.solidFilePdf,
                                     color: Color(0xff5a5a5a),
-                                    size: 36,
+                                    size: 32,
                                   )
                                 )
                               ),

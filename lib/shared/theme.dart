@@ -74,7 +74,7 @@ class AppTheme {
   static final TextStyle _body = TextStyle(
     fontFamily: 'Roboto',
     color: AppColors.typography,
-    fontSize: 12,
+    fontSize: 13,
     fontWeight: FontWeight.normal
   );
 
