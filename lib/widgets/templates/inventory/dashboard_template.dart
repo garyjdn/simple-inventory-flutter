@@ -53,7 +53,7 @@ class TmpDashboard extends StatelessWidget {
                                     child: Icon(
                                       FontAwesomeIcons.userCheck,
                                     color: Color(0xff5a5a5a),
-                                      size: 36,
+                                      size: 32,
                                     )
                                   )
                                 ),
@@ -84,7 +84,7 @@ class TmpDashboard extends StatelessWidget {
                                   child: Icon(
                                     FontAwesomeIcons.palette,
                                     color: Color(0xff5a5a5a),
-                                    size: 36,
+                                    size: 32,
                                   )
                                 )
                               ),
@@ -112,7 +112,7 @@ class TmpDashboard extends StatelessWidget {
                                   child: Icon(
                                     FontAwesomeIcons.unity,
                                     color: Color(0xff5a5a5a),
-                                    size: 36,
+                                    size: 32,
                                   )
                                 )
                               ),
@@ -140,7 +140,7 @@ class TmpDashboard extends StatelessWidget {
                                   child: Icon(
                                     FontAwesomeIcons.box,
                                     color: Color(0xff5a5a5a),
-                                    size: 36,
+                                    size: 32,
                                   )
                                 )
                               ),
@@ -168,7 +168,7 @@ class TmpDashboard extends StatelessWidget {
                                   child: Icon(
                                     FontAwesomeIcons.angleDoubleDown,
                                     color: Color(0xff5a5a5a),
-                                    size: 36,
+                                    size: 32,
                                   )
                                 )
                               ),
@@ -196,7 +196,7 @@ class TmpDashboard extends StatelessWidget {
                                   child: Icon(
                                     FontAwesomeIcons.angleDoubleUp,
                                     color: Color(0xff5a5a5a),
-                                    size: 36,
+                                    size: 32,
                                   )
                                 )
                               ),
@@ -224,7 +224,7 @@ class TmpDashboard extends StatelessWidget {
                                   child: Icon(
                                     FontAwesomeIcons.exclamationCircle,
                                     color: Color(0xff5a5a5a),
-                                    size: 36,
+                                    size: 32,
                                   )
                                 )
                               ),
@@ -252,7 +252,7 @@ class TmpDashboard extends StatelessWidget {
                                   child: Icon(
                                     FontAwesomeIcons.handHolding,
                                     color: Color(0xff5a5a5a),
-                                    size: 36,
+                                    size: 32,
                                   )
                                 )
                               ),
@@ -280,7 +280,7 @@ class TmpDashboard extends StatelessWidget {
                                   child: Icon(
                                     FontAwesomeIcons.solidFilePdf,
                                     color: Color(0xff5a5a5a),
-                                    size: 36,
+                                    size: 32,
                                   )
                                 )
                               ),

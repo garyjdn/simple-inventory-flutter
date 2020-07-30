@@ -11,6 +11,10 @@ class LoadSupplierStarted extends SupplierEvent {
 }
 
 class DeleteSupplierButtonPressed extends SupplierEvent {
+  final Supplier supplier;
+
+  DeleteSupplierButtonPressed({this.supplier}): assert(supplier != null);
+
   @override
   List<Object> get props => throw UnimplementedError();
 }

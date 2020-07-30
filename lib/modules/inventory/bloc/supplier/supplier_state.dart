@@ -39,5 +39,15 @@ class SupplierLoadFailure extends SupplierState {
 
   @override
   List<Object> get props => [];
+}
 
+class SupplierDeleteSuccess extends SupplierState {
+  final String message;
+
+  SupplierDeleteSuccess({
+    this.message
+  });
+
+  @override
+  List<Object> get props => [];
 }

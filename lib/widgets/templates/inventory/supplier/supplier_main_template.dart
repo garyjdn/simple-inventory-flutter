@@ -2,19 +2,25 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:inventoryapp/data/data.dart';
 import 'package:inventoryapp/modules/modules.dart';
 import 'package:inventoryapp/widgets/widgets.dart';
+import 'package:inventoryapp/widgets/components/custom_dialog.dart' as customDialog;
 
 class TmpSupplierMain extends StatelessWidget {
+  SupplierBloc _supplierBloc;
 
-  void deleteDialog(BuildContext ctx) {
-    showDialog(
+  Future deleteDialog(BuildContext ctx, Supplier supplier) async {
+    return await showDialog(
       context: ctx,
       builder: (BuildContext context) => CustomDialog(
         title: 'Delete Supplier?',
         content: Text('You will permanently remove this item'),
         primaryButton: PrimaryButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.of(context).pop();
+            _supplierBloc.add(DeleteSupplierButtonPressed(supplier: supplier));
+          },
           text: 'Delete'
         ),
         secondaryButton: SecondaryButton(
@@ -28,7 +34,7 @@ class TmpSupplierMain extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SupplierBloc _supplierBloc = BlocProvider.of<SupplierBloc>(context);
+    _supplierBloc = BlocProvider.of<SupplierBloc>(context);
 
     return Scaffold(
       backgroundColor: Colors.blue[50],
@@ -59,7 +65,24 @@ class TmpSupplierMain extends StatelessWidget {
         },
       ),
       body: BlocConsumer<SupplierBloc, SupplierState>(
-        listener: (context, state) {},
+        listener: (context, state) async {
+          if(state is SupplierDeleteSuccess) {
+            await customDialog.showDialog(
+              context: context,
+              builder: (_) => MessageDialog(
+                message: state.message
+              )
+            );
+            _supplierBloc.add(LoadSupplierStarted());
+          }
+        },
+        buildWhen: (prevState, state) {
+          if(state is SupplierLoadStarted
+          || state is SupplierLoadSuccess) {
+            return true;
+          }
+          return false;
+        },
         builder: (context, state) {
           if(state is SupplierLoadStarted) {
             return Center(
@@ -86,7 +109,7 @@ class TmpSupplierMain extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
                       IconButton(
-                        onPressed: () => deleteDialog(context),
+                        onPressed: () => deleteDialog(context, supplier),
                         icon: Icon(FontAwesomeIcons.trash),
                         iconSize: 18,
                       ),

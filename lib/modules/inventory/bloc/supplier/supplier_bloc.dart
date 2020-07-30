@@ -17,6 +17,8 @@ class SupplierBloc extends Bloc<SupplierEvent, SupplierState> {
   ) async* {
     if(event is LoadSupplierStarted) {
       yield* _loadSupplierStarted(event);
+    } else if(event is DeleteSupplierButtonPressed) {
+      yield* _deleteSupplier(event);
     }
   }
 
@@ -25,5 +27,12 @@ class SupplierBloc extends Bloc<SupplierEvent, SupplierState> {
     SupplierRepository _supplierRepository = SupplierRepository();
     List<Supplier> suppliers = await _supplierRepository.getAllData();
     yield SupplierLoadSuccess(suppliers: suppliers);
+  }
+
+  Stream<SupplierState> _deleteSupplier(DeleteSupplierButtonPressed event) async* {
+    yield SupplierLoadStarted();
+    SupplierRepository _supplierRepository = SupplierRepository();
+    await _supplierRepository.deleteSupplier(event.supplier);
+    yield SupplierDeleteSuccess(message: 'Supplier deleted');
   }
 }
