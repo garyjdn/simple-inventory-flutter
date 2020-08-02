@@ -36,9 +36,7 @@ class TmpDashboard extends StatelessWidget {
                       padding: EdgeInsets.all(10),
                       child: Center(
                         child: InkWell(
-                          onTap: () {
-                            Navigator.of(context).pushNamed(SupplierMainScreen.routeName);
-                          },
+                          onTap: () => Navigator.of(context).pushNamed(SupplierMainScreen.routeName),
                           child: Container(
                             decoration: BoxDecoration(
                               color: Colors.white,
@@ -98,27 +96,30 @@ class TmpDashboard extends StatelessWidget {
                     Container(
                       padding: EdgeInsets.all(10),
                       child: Center(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            border: Border.all(color: Colors.white, width: 1.5),
-                            borderRadius: BorderRadius.circular(8)
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Container(
-                                child: Center(
-                                  child: Icon(
-                                    FontAwesomeIcons.unity,
-                                    color: Color(0xff5a5a5a),
-                                    size: 32,
+                        child: InkWell(
+                          onTap: () => Navigator.of(context).pushNamed(UnitMainScreen.routeName),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              border: Border.all(color: Colors.white, width: 1.5),
+                              borderRadius: BorderRadius.circular(8)
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Container(
+                                  child: Center(
+                                    child: Icon(
+                                      FontAwesomeIcons.unity,
+                                      color: Color(0xff5a5a5a),
+                                      size: 32,
+                                    )
                                   )
-                                )
-                              ),
-                              SizedBox(height: 10),
-                              Text('Units')
-                            ],
+                                ),
+                                SizedBox(height: 10),
+                                Text('Units')
+                              ],
+                            ),
                           ),
                         )
                       ),
