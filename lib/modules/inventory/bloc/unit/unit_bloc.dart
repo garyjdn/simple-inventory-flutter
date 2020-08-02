@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
+import 'package:inventoryapp/data/data.dart';
 
 part 'unit_event.dart';
 part 'unit_state.dart';
@@ -13,6 +15,24 @@ class UnitBloc extends Bloc<UnitEvent, UnitState> {
   Stream<UnitState> mapEventToState(
     UnitEvent event,
   ) async* {
-    // TODO: implement mapEventToState
+    if(event is LoadUnitStarted) {
+      yield* _loadUnitStarted(event);
+    } else if(event is DeleteUnitButtonPressed) {
+      yield* _deleteUnit(event);
+    }
+  }
+
+  Stream<UnitState> _loadUnitStarted(LoadUnitStarted event) async* {
+    yield UnitLoadStarted();
+    UnitRepository _supplierRepository = UnitRepository();
+    List<Unit> units = await _supplierRepository.getAllData();
+    yield UnitLoadSuccess(units: units);
+  }
+
+  Stream<UnitState> _deleteUnit(DeleteUnitButtonPressed event) async* {
+    yield UnitLoadStarted();
+    UnitRepository _supplierRepository = UnitRepository();
+    await _supplierRepository.deleteUnit(event.unit);
+    yield UnitDeleteSuccess(message: 'Unit deleted');
   }
 }

@@ -58,6 +58,10 @@ class AppDrawer extends StatelessWidget {
                               ),
                             ),
                             ListTile(
+                              onTap: () {
+                                Navigator.of(context).pop();
+                                Navigator.of(context).pushNamed(UserMainScreen.routeName);
+                              },
                               leading: Icon(
                                 FontAwesomeIcons.users, 
                                 size:21
@@ -65,6 +69,10 @@ class AppDrawer extends StatelessWidget {
                               title: Text('User')
                             ),
                             ListTile(
+                              onTap: () {
+                                Navigator.of(context).pop();
+                                Navigator.of(context).pushNamed(StationMainScreen.routeName);
+                              },
                               leading: Icon(
                                 FontAwesomeIcons.building,
                                 size:21
