@@ -24,6 +24,8 @@ class TmpSupplierForm extends StatefulWidget {
 
 class _TmpSupplierFormState extends State<TmpSupplierForm> {
 
+  final _formKey = GlobalKey<FormState>();
+
   SupplierFormBloc _supplierFormBloc;
   TextEditingController _nameCtrl;
   TextEditingController _phoneCtrl;
@@ -82,130 +84,153 @@ class _TmpSupplierFormState extends State<TmpSupplierForm> {
           },
           child: Container(
             height: deviceSize.height,
-            child: Column(
-              children: <Widget>[
-                Expanded(
-                  child: Container(
-                    padding: const EdgeInsets.all(15),
-                    child: Column(
-                      children: <Widget>[
-                        SizedBox(height: 10),
-                        TextFormField(
-                          controller: _nameCtrl,
-                          decoration: InputDecoration(
-                            labelText: 'Name',
-                            filled: true,
-                            fillColor: Colors.white,
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Colors.blue[600],
-                                width: 1
+            child: Form(
+              key: _formKey,
+              child: Column(
+                children: <Widget>[
+                  Expanded(
+                    child: Container(
+                      padding: const EdgeInsets.all(15),
+                      child: Column(
+                        children: <Widget>[
+                          SizedBox(height: 10),
+                          TextFormField(
+                            controller: _nameCtrl,
+                            decoration: InputDecoration(
+                              labelText: 'Name',
+                              filled: true,
+                              fillColor: Colors.white,
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Colors.blue[600],
+                                  width: 1
+                                ),
                               ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Colors.blue[600],
+                                  width: 1
+                                ),
+                              )
                             ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Colors.blue[600],
-                                width: 1
-                              ),
-                            )
+                            validator: (value) {
+                              if (value.isEmpty) {
+                                return 'This field is required';
+                              }
+                              return null;
+                            },
                           ),
-                        ),
-                        SizedBox(height: 20),
-                        TextFormField(
-                          controller: _phoneCtrl,
-                          decoration: InputDecoration(
-                            labelText: 'Phone',
-                            filled: true,
-                            fillColor: Colors.white,
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Colors.blue[600],
-                                width: 1
+                          SizedBox(height: 20),
+                          TextFormField(
+                            controller: _phoneCtrl,
+                            decoration: InputDecoration(
+                              labelText: 'Phone',
+                              filled: true,
+                              fillColor: Colors.white,
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Colors.blue[600],
+                                  width: 1
+                                ),
                               ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Colors.blue[600],
+                                  width: 1
+                                ),
+                              )
                             ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Colors.blue[600],
-                                width: 1
-                              ),
-                            )
+                            validator: (value) {
+                              if (value.isEmpty) {
+                                return 'This field is required';
+                              }
+                              return null;
+                            },
                           ),
-                        ),
-                        SizedBox(height: 20),
-                        TextFormField(
-                          controller: _addressCtrl,
-                          maxLines: 4,
-                          decoration: InputDecoration(
-                            labelText: 'Address',
-                            filled: true,
-                            fillColor: Colors.white,
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Colors.blue[600],
-                                width: 1
+                          SizedBox(height: 20),
+                          TextFormField(
+                            controller: _addressCtrl,
+                            maxLines: 4,
+                            decoration: InputDecoration(
+                              labelText: 'Address',
+                              filled: true,
+                              fillColor: Colors.white,
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Colors.blue[600],
+                                  width: 1
+                                ),
                               ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Colors.blue[600],
+                                  width: 1
+                                ),
+                              )
                             ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Colors.blue[600],
-                                width: 1
-                              ),
-                            )
-                          ),
-                        )
-                      ],
+                            validator: (value) {
+                              if (value.isEmpty) {
+                                return 'This field is required';
+                              }
+                              return null;
+                            },
+                          )
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                BlocBuilder<SupplierFormBloc, SupplierFormState>(
-                  builder: (context, state) {
-                    if(state is SupplierFormSubmitInProgress) {
+                  BlocBuilder<SupplierFormBloc, SupplierFormState>(
+                    builder: (context, state) {
+                      if(state is SupplierFormSubmitInProgress) {
+                        return Container(
+                          height: 55,
+                          width: double.infinity,
+                          child: RaisedButton(
+                            onPressed: () {},
+                            elevation: 0,
+                            color: Colors.blue[300],
+                            child: SizedBox(
+                              width:20,
+                              height: 20,
+                              child: CircularProgressIndicator(
+                                valueColor: new AlwaysStoppedAnimation<Color>(Colors.white),
+                              ),
+                            )
+                          )
+                        );
+                      }
                       return Container(
                         height: 55,
                         width: double.infinity,
                         child: RaisedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            if (_formKey.currentState.validate()) {
+                              if(widget.action == 'create') {
+                                _supplierFormBloc.add(AddSupplierButtonPressed(
+                                  name: _nameCtrl.text,
+                                  phone: _phoneCtrl.text,
+                                  address: _addressCtrl.text));
+                              } else if(widget.action == 'edit') {
+                                assert(widget.supplier != null);
+                                Supplier supplier = widget.supplier
+                                  ..name = _nameCtrl.text
+                                  ..phone = _phoneCtrl.text
+                                  ..address = _addressCtrl.text;
+                                _supplierFormBloc.add(EditSupplierButtonPressed(supplier: supplier));
+                              }
+                            }
+                          },
                           elevation: 0,
                           color: Colors.blue[300],
-                          child: SizedBox(
-                            width:20,
-                            height: 20,
-                            child: CircularProgressIndicator(
-                              valueColor: new AlwaysStoppedAnimation<Color>(Colors.white),
-                            ),
-                          )
+                          child: widget.action == 'create'
+                            ? Text('Create', style: TextStyle(color: Colors.white))
+                            : Text('Update', style: TextStyle(color: Colors.white))
                         )
                       );
                     }
-                    return Container(
-                      height: 55,
-                      width: double.infinity,
-                      child: RaisedButton(
-                        onPressed: () {
-                          if(widget.action == 'create') {
-                            _supplierFormBloc.add(AddSupplierButtonPressed(
-                              name: _nameCtrl.text,
-                              phone: _phoneCtrl.text,
-                              address: _addressCtrl.text));
-                          } else if(widget.action == 'edit') {
-                            assert(widget.supplier != null);
-                            Supplier supplier = widget.supplier
-                              ..name = _nameCtrl.text
-                              ..phone = _phoneCtrl.text
-                              ..address = _addressCtrl.text;
-                            _supplierFormBloc.add(EditSupplierButtonPressed(supplier: supplier));
-                          }
-                        },
-                        elevation: 0,
-                        color: Colors.blue[300],
-                        child: widget.action == 'create'
-                          ? Text('Create', style: TextStyle(color: Colors.white))
-                          : Text('Update', style: TextStyle(color: Colors.white))
-                      )
-                    );
-                  }
-                )
-              ],
+                  )
+                ],
+              ),
             ),
           ),
         )
