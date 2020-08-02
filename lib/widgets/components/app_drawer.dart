@@ -69,6 +69,7 @@ class AppDrawer extends StatelessWidget {
                               title: Text('User')
                             ),
                             ListTile(
+                              onTap: () => Navigator.of(context).pushNamed(StationMainScreen.routeName),
                               leading: Icon(
                                 FontAwesomeIcons.building,
                                 size:21

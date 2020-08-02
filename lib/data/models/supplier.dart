@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:inventoryapp/data/data.dart';
 
 class Supplier {
   String id;
