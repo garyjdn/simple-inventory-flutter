@@ -8,4 +8,6 @@ Map<String, Widget Function(BuildContext)> routes = {
   SupplierFormScreen.routeName: (ctx) => SupplierFormScreen(),
   UnitMainScreen.routeName: (ctx) => UnitMainScreen(),
   UnitFormScreen.routeName: (ctx) => UnitFormScreen(),
+  UserMainScreen.routeName: (ctx) => UserMainScreen(),
+  UserFormScreen.routeName: (ctx) => UserFormScreen(),
 };
