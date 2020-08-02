@@ -24,6 +24,7 @@ class TmpUnitForm extends StatefulWidget {
 
 class _TmpUnitFormState extends State<TmpUnitForm> {
 
+  final _formKey = GlobalKey<FormState>();
   UnitFormBloc _unitFormBloc;
   TextEditingController _nameCtrl;
 
@@ -76,83 +77,94 @@ class _TmpUnitFormState extends State<TmpUnitForm> {
           },
           child: Container(
             height: deviceSize.height,
-            child: Column(
-              children: <Widget>[
-                Expanded(
-                  child: Container(
-                    padding: const EdgeInsets.all(15),
-                    child: Column(
-                      children: <Widget>[
-                        SizedBox(height: 10),
-                        TextFormField(
-                          controller: _nameCtrl,
-                          decoration: InputDecoration(
-                            labelText: 'Name',
-                            filled: true,
-                            fillColor: Colors.white,
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Colors.blue[600],
-                                width: 1
+            child: Form(
+              key: _formKey,
+              child: Column(
+                children: <Widget>[
+                  Expanded(
+                    child: Container(
+                      padding: const EdgeInsets.all(15),
+                      child: Column(
+                        children: <Widget>[
+                          SizedBox(height: 10),
+                          TextFormField(
+                            controller: _nameCtrl,
+                            decoration: InputDecoration(
+                              labelText: 'Name',
+                              filled: true,
+                              fillColor: Colors.white,
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Colors.blue[600],
+                                  width: 1
+                                ),
                               ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Colors.blue[600],
+                                  width: 1
+                                ),
+                              )
                             ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Colors.blue[600],
-                                width: 1
-                              ),
-                            )
+                            validator: (value) {
+                              if (value.isEmpty) {
+                                return 'This field is required';
+                              }
+                              return null;
+                            },
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                BlocBuilder<UnitFormBloc, UnitFormState>(
-                  builder: (context, state) {
-                    if(state is UnitFormSubmitInProgress) {
+                  BlocBuilder<UnitFormBloc, UnitFormState>(
+                    builder: (context, state) {
+                      if(state is UnitFormSubmitInProgress) {
+                        return Container(
+                          height: 55,
+                          width: double.infinity,
+                          child: RaisedButton(
+                            onPressed: () {},
+                            elevation: 0,
+                            color: Colors.blue[300],
+                            child: SizedBox(
+                              width:20,
+                              height: 20,
+                              child: CircularProgressIndicator(
+                                valueColor: new AlwaysStoppedAnimation<Color>(Colors.white),
+                              ),
+                            )
+                          )
+                        );
+                      }
                       return Container(
                         height: 55,
                         width: double.infinity,
                         child: RaisedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            if (_formKey.currentState.validate()) {
+                              if(widget.action == 'create') {
+                                _unitFormBloc.add(AddUnitButtonPressed(
+                                  name: _nameCtrl.text));
+                              } else if(widget.action == 'edit') {
+                                assert(widget.unit != null);
+                                Unit unit = widget.unit
+                                  ..name = _nameCtrl.text;
+                                _unitFormBloc.add(EditUnitButtonPressed(unit: unit));
+                              }
+                            }
+                          },
                           elevation: 0,
                           color: Colors.blue[300],
-                          child: SizedBox(
-                            width:20,
-                            height: 20,
-                            child: CircularProgressIndicator(
-                              valueColor: new AlwaysStoppedAnimation<Color>(Colors.white),
-                            ),
-                          )
+                          child: widget.action == 'create'
+                            ? Text('Create', style: TextStyle(color: Colors.white))
+                            : Text('Update', style: TextStyle(color: Colors.white))
                         )
                       );
                     }
-                    return Container(
-                      height: 55,
-                      width: double.infinity,
-                      child: RaisedButton(
-                        onPressed: () {
-                          if(widget.action == 'create') {
-                            _unitFormBloc.add(AddUnitButtonPressed(
-                              name: _nameCtrl.text));
-                          } else if(widget.action == 'edit') {
-                            assert(widget.unit != null);
-                            Unit unit = widget.unit
-                              ..name = _nameCtrl.text;
-                            _unitFormBloc.add(EditUnitButtonPressed(unit: unit));
-                          }
-                        },
-                        elevation: 0,
-                        color: Colors.blue[300],
-                        child: widget.action == 'create'
-                          ? Text('Create', style: TextStyle(color: Colors.white))
-                          : Text('Update', style: TextStyle(color: Colors.white))
-                      )
-                    );
-                  }
-                )
-              ],
+                  )
+                ],
+              ),
             ),
           ),
         )
