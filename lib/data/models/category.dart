@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:inventoryapp/data/data.dart';
 
 class Category {
@@ -16,9 +17,22 @@ class Category {
     );
   }
 
+  factory Category.fromDocumentSnapshot(DocumentSnapshot ds) {
+    return Category(
+      id: ds.documentID,
+      name: ds.data['name'],
+    );
+  }
+
   Map<String, dynamic> toMap() {
     return {
       'id': this.id,
+      'name': this.name,
+    };
+  }
+
+  Map<String, dynamic> toDocument() {
+    return {
       'name': this.name,
     };
   }
