@@ -5,7 +5,6 @@ export './incoming/incoming_bloc.dart';
 export './item/item_bloc.dart';
 export './item_form/item_form_bloc.dart';
 export './outgoing/outgoing_bloc.dart';
-export './profile/profile_bloc.dart';
 export './report/report_bloc.dart';
 export './request_item/request_item_bloc.dart';
 export './station/station_bloc.dart';
