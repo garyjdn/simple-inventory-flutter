@@ -24,15 +24,15 @@ class UnitBloc extends Bloc<UnitEvent, UnitState> {
 
   Stream<UnitState> _loadUnitStarted(LoadUnitStarted event) async* {
     yield UnitLoadStarted();
-    UnitRepository _supplierRepository = UnitRepository();
-    List<Unit> units = await _supplierRepository.getAllData();
+    UnitRepository _unitRepository = UnitRepository();
+    List<Unit> units = await _unitRepository.getAllData();
     yield UnitLoadSuccess(units: units);
   }
 
   Stream<UnitState> _deleteUnit(DeleteUnitButtonPressed event) async* {
     yield UnitLoadStarted();
-    UnitRepository _supplierRepository = UnitRepository();
-    await _supplierRepository.deleteUnit(event.unit);
+    UnitRepository _unitRepository = UnitRepository();
+    await _unitRepository.deleteUnit(event.unit);
     yield UnitDeleteSuccess(message: 'Unit deleted');
   }
 }
