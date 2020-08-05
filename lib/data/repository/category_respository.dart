@@ -17,6 +17,13 @@ class CategoryRepository {
     return categories;
   }
 
+  Future<Category> getCategory({@required uid}) async {
+    assert(uid != null);
+    DocumentSnapshot ds = await categoryCollection.document(uid).get(); 
+    Category category = Category.fromDocumentSnapshot(ds); 
+    return category; 
+  }
+
   Future<void> createCategory({
     @required name,
   }) async {

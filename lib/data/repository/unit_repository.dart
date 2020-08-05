@@ -17,6 +17,12 @@ class UnitRepository {
     return units;
   }
 
+  Future<Unit> getUnit({@required uid}) async { 
+    DocumentSnapshot ds = await unitCollection.document(uid).get(); 
+    Unit unit = Unit.fromDocumentSnapshot(ds); 
+    return unit; 
+  }
+
   Future<void> createUnit({
     @required name,
   }) async {
