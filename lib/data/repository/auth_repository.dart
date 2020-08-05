@@ -32,7 +32,8 @@ class AuthRepository {
 
     Map<String, dynamic> userMap =
         await UserFirestore.getData(firebaseUser.uid);
-    User user = User.fromMap(userMap);
+    User user = User.fromMap(userMap)
+      ..id = firebaseUser.uid;
 
     return user;
   }

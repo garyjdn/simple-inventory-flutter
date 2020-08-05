@@ -1,10 +1,20 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:inventoryapp/data/data.dart';
 import 'package:inventoryapp/modules/modules.dart';
 import 'package:inventoryapp/shared/shared.dart';
 
-class AppDrawer extends StatelessWidget {
+class AppDrawer extends StatefulWidget {
+  @override
+  _AppDrawerState createState() => _AppDrawerState();
+}
+
+class _AppDrawerState extends State<AppDrawer> {
+  User user;
+
+
   @override
   Widget build(BuildContext context) {
     AppBloc _appBloc = BlocProvider.of<AppBloc>(context);
@@ -23,39 +33,67 @@ class AppDrawer extends StatelessWidget {
                       Expanded(
                         child: ListView(
                           children: <Widget>[
-                            DrawerHeader(
-                              padding: EdgeInsets.all(0),
-                              child: Container(
-                                // height: 100,
-                                padding: EdgeInsets.all(15),
-                                width: double.infinity,
-                                color: Colors.blue[200],
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: <Widget>[
-                                    CircleAvatar(
-                                      radius: 35.0,
-                                      // backgroundColor: Colors.brown.shade800,
-                                      child: Text('A', style: TextStyle(fontSize: 25)),
+                            StreamBuilder<QuerySnapshot>(
+                              stream: Firestore.instance.collection('users').snapshots(),
+                              builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                                if(snapshot.connectionState != ConnectionState.waiting) {
+                                  List<DocumentSnapshot> ds = snapshot.data.documents.where((DocumentSnapshot doc) => doc.documentID == authState.user.id).toList();
+                                  user = User.fromDocumentSnapshot(ds[0]);
+                                  
+                                  return DrawerHeader(
+                                    padding: EdgeInsets.all(0),
+                                    child: Container(
+                                      // height: 100,
+                                      padding: EdgeInsets.all(15),
+                                      width: double.infinity,
+                                      color: Colors.blue[200],
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        children: <Widget>[
+                                          CircleAvatar(
+                                            child: ClipOval(
+                                              child: user.image != null && user.image.isNotEmpty
+                                              ? Image.network(user.image)
+                                              : Icon(Icons.person, size: 35)
+                                            ),
+                                            radius: 35,
+                                          ),
+                                          // CircleAvatar(
+                                          //   radius: 35.0,
+                                          //   child: Text('A', style: TextStyle(fontSize: 25)),
+                                          // ),
+                                          SizedBox(height: 10),
+                                          Text(
+                                            '${user.name} - ${user.role}' ,
+                                            style: TextStyle(color: Colors.white),
+                                          ),
+                                          Text(
+                                            user.email ?? 'No Email Registered',
+                                            style: TextStyle(color: Colors.white),
+                                          ),
+                                          Text(
+                                            Helpers.formatDateUtil(
+                                                DateTime.now().toIso8601String()),
+                                            style: TextStyle(color: Colors.white),
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                    SizedBox(height: 10),
-                                    Text(
-                                      '${authState.user.name} - ${authState.user.role}' ,
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                    Text(
-                                      authState.user.email ?? 'No Email Registered',
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                    Text(
-                                      Helpers.formatDateUtil(
-                                          DateTime.now().toIso8601String()),
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                  ],
-                                ),
-                              ),
+                                  );
+
+                                } else {
+                                  return DrawerHeader(
+                                    padding: EdgeInsets.all(0),
+                                    child: Container(
+                                      padding: EdgeInsets.all(15),
+                                      width: double.infinity,
+                                      color: Colors.blue[200],
+                                    )
+                                  );
+                                }
+                                
+                              }
                             ),
                             ListTile(
                               onTap: () {
@@ -81,6 +119,10 @@ class AppDrawer extends StatelessWidget {
                             ),
                             Divider(),
                             ListTile(
+                              onTap: () {
+                                Navigator.of(context).pop();
+                                Navigator.of(context).pushNamed(ProfileScreen.routeName);
+                              },
                               leading: Icon(
                                 FontAwesomeIcons.userAlt,
                                 size:21

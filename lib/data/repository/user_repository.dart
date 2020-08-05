@@ -19,6 +19,12 @@ class UserRepository {
     return users;
   }
 
+  Future<User> getUser({@required uid}) async {
+    DocumentSnapshot ds = await userCollection.document(uid).get();
+    User user = User.fromDocumentSnapshot(ds);
+    return user;
+  }
+
   Future<void> createUser({
     @required name,
     @required email,

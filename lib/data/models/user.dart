@@ -3,12 +3,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class User {
   String id;
   String name;
+  String image;
   String email;
   String role;
 
   User({
     this.id,
     this.name,
+    this.image,
     this.email,
     this.role,
   });
@@ -17,6 +19,7 @@ class User {
     return User(
       id: map['id'],
       name: map['name'],
+      image: map['image'],
       email: map['email'],
       role: map['role']
     );
@@ -26,6 +29,7 @@ class User {
     return User(
       id: ds.documentID,
       name: ds.data['name'],
+      image: ds.data['image'],
       email: ds.data['email'],
       role: ds.data['role'],
     );
@@ -35,6 +39,7 @@ class User {
     return {
       'id': this.id,
       'name': this.name,
+      'image': this.image,
       'email': this.email,
       'role': this.role,
     };
@@ -43,6 +48,7 @@ class User {
   Map<String, dynamic> toDocument() {
     return {
       'name': this.name,
+      'image': this.image,
       'email': this.email,
       'role': this.role
     };
