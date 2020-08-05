@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:inventoryapp/data/data.dart';
 
 class Item {
@@ -17,8 +18,15 @@ class Item {
     return Item(
       id: map['id'],
       name: map['name'],
-      category: Category.fromMap(map['category']),
-      unit: Unit.fromMap(map['unit']),
+      category: map['category'],
+      unit: map['unit'],
+    );
+  }
+
+  factory Item.fromDocumentSnapshot(DocumentSnapshot ds) {
+    return Item(
+      id: ds.documentID,
+      name: ds.data['name'],
     );
   }
 
@@ -28,6 +36,14 @@ class Item {
       'name': this.name,
       'category': this.category.toMap(),
       'unit': this.unit.toMap(),
+    };
+  }
+
+  Map<String, dynamic> toDocument() {
+    return {
+      'name': this.name,
+      'category_id': this.category.id,
+      'unit_id': this.unit.id
     };
   }
 }

@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'modules/modules.dart';
 
 Map<String, Widget Function(BuildContext)> routes = {
+  CategoryMainScreen.routeName: (ctx) => CategoryMainScreen(),
+  CategoryFormScreen.routeName: (ctx) => CategoryFormScreen(),
+  ItemMainScreen.routeName: (ctx) => ItemMainScreen(),
+  ItemFormScreen.routeName: (ctx) => ItemFormScreen(),
   ProfileScreen.routeName: (ctx) => ProfileScreen(),
   StationMainScreen.routeName: (ctx) => StationMainScreen(),
   StationFormScreen.routeName: (ctx) => StationFormScreen(),

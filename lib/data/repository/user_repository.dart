@@ -34,7 +34,7 @@ class UserRepository {
     final FirebaseAuth _auth = FirebaseAuth.instance;
     final FirebaseUser firebaseUser = (await _auth.createUserWithEmailAndPassword(
       email: email,
-      password: 'a password',
+      password: password,
     )).user;
 
     User user = User(
