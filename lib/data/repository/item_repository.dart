@@ -16,7 +16,7 @@ class ItemRepository {
 
       items.add(Item.fromMap({
         'id': ds.documentID,
-        'name': ds['name'],
+        'name': ds.data['name'],
         'category': category,
         'unit': unit
       }));
@@ -24,6 +24,19 @@ class ItemRepository {
 
 
     return items;
+  }
+
+  Future<Item> getItem({@required uid}) async {
+    assert(uid != null);
+    DocumentSnapshot ds = await itemCollection.document(uid).get(); 
+    Item item = Item.fromDocumentSnapshot(ds);
+
+    UnitRepository unitRepository = UnitRepository();
+    Unit unit = await unitRepository.getUnit(uid: ds.data['unit_id']);
+
+    item.unit = unit;
+
+    return item; 
   }
 
   Future<void> createItem({
