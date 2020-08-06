@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:equatable/equatable.dart';
 import 'package:inventoryapp/data/data.dart';
 
-class Item {
+class Item extends Equatable{
   String id;
   String name;
   Category category;
@@ -46,4 +47,8 @@ class Item {
       'unit_id': this.unit.id
     };
   }
+
+  @override
+  // TODO: implement props
+  List<Object> get props => [id, name];
 }

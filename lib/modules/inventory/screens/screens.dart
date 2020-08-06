@@ -1,4 +1,5 @@
 export './category/category.dart';
+export './incoming/incoming.dart';
 export './item/item.dart';
 export './station/station.dart';
 export './supplier/supplier.dart';

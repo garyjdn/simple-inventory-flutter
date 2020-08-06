@@ -4,6 +4,8 @@ import 'modules/modules.dart';
 Map<String, Widget Function(BuildContext)> routes = {
   CategoryMainScreen.routeName: (ctx) => CategoryMainScreen(),
   CategoryFormScreen.routeName: (ctx) => CategoryFormScreen(),
+  IncomingMainScreen.routeName: (ctx) => IncomingMainScreen(),
+  IncomingFormScreen.routeName: (ctx) => IncomingFormScreen(),
   ItemMainScreen.routeName: (ctx) => ItemMainScreen(),
   ItemFormScreen.routeName: (ctx) => ItemFormScreen(),
   ProfileScreen.routeName: (ctx) => ProfileScreen(),

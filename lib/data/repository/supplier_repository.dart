@@ -17,6 +17,13 @@ class SupplierRepository {
     return suppliers;
   }
 
+  Future<Supplier> getSupplier({@required uid}) async {
+    assert(uid != null);
+    DocumentSnapshot ds = await supplierCollection.document(uid).get(); 
+    Supplier supplier = Supplier.fromDocumentSnapshot(ds); 
+    return supplier; 
+  }
+
   Future<void> createSupplier({
     @required name,
     @required phone,
