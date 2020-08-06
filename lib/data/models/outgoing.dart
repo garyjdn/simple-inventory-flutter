@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:inventoryapp/data/data.dart';
 
 class Outgoing {
@@ -21,7 +22,7 @@ class Outgoing {
     return Outgoing(
       id: map['id'],
       amount: map['amount'],
-      date: map['date'],
+      date: map['date'] is Timestamp? map['date'].toDate() : map['date'] as DateTime,
       item: map['item'],
       station: map['station'],
       user: map['user']
@@ -39,4 +40,13 @@ class Outgoing {
     };
   }
 
+  Map<String, dynamic> toDocument() {
+    return {
+      'amount': this.amount,
+      'date': this.date,
+      'item_id': this.item.id,
+      'station_id': this.station.id,
+      'user_id': this.user.id,
+    };
+  }
 }
