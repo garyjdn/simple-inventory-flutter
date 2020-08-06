@@ -17,6 +17,14 @@ class StationRepository {
     return stations;
   }
 
+  Future<Station> getStation({@required uid}) async {
+    assert(uid != null);
+    DocumentSnapshot ds = await stationCollection.document(uid).get(); 
+    Station station = Station.fromDocumentSnapshot(ds);
+
+    return station; 
+  }
+
   Future<void> createStation({
     @required name,
   }) async {

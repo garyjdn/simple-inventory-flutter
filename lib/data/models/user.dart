@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:equatable/equatable.dart';
 
-class User {
+class User extends Equatable {
   String id;
   String name;
   String image;
@@ -53,4 +54,7 @@ class User {
       'role': this.role
     };
   }
+
+  @override
+  List<Object> get props => [id];
 }

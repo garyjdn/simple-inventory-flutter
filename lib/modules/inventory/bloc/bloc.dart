@@ -6,6 +6,7 @@ export './incoming_form/incoming_form_bloc.dart';
 export './item/item_bloc.dart';
 export './item_form/item_form_bloc.dart';
 export './outgoing/outgoing_bloc.dart';
+export './outgoing_form/outgoing_form_bloc.dart';
 export './report/report_bloc.dart';
 export './request_item/request_item_bloc.dart';
 export './station/station_bloc.dart';
