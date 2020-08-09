@@ -328,17 +328,7 @@ class TmpDashboard extends StatelessWidget {
                             child: Center(
                               child: InkWell(
                                 onTap: () async {
-                                  if(authState.user.role == 'Admin'
-                                  || authState.user.role == 'Operator') {
-                                    Navigator.of(context).pushNamed(RequestItemMainScreen.routeName);
-                                  } else {
-                                    await customDialog.showDialog(
-                                      context: context,
-                                      builder: (_) => MessageDialog(
-                                        message: 'You dont have any permission.'
-                                      )
-                                    );
-                                  }
+                                  Navigator.of(context).pushNamed(RequestItemMainScreen.routeName);
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(
@@ -373,7 +363,7 @@ class TmpDashboard extends StatelessWidget {
                                 onTap: () async {
                                   if(authState.user.role == 'Admin'
                                   || authState.user.role == 'Operator') {
-                                    Navigator.of(context).pushNamed(OutgoingMainScreen.routeName);
+                                    Navigator.of(context).pushNamed(ReportScreen.routeName);
                                   } else {
                                     await customDialog.showDialog(
                                       context: context,

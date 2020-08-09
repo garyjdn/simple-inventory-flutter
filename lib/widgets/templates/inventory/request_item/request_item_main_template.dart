@@ -85,7 +85,7 @@ class TmpRequestItemMain extends StatelessWidget {
               title: Text('Request'),
               centerTitle: true,
             ),
-            floatingActionButton: authState.user.role == 'User' 
+            floatingActionButton: authState.user.role == 'Staff' 
             ? BlocBuilder<RequestItemBloc, RequestItemState>(
               builder: (context, state) {
                 if(state is RequestItemLoadSuccess) {
