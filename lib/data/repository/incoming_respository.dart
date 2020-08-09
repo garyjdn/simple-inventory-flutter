@@ -27,6 +27,29 @@ class IncomingRepository {
     return incomings;
   }
 
+  Future<List<Incoming>> getAllDataFilteredWithDate(DateTime startDate, DateTime endDate) async {
+    List<Incoming> incomings = [];
+    SupplierRepository categoryRepository = SupplierRepository();
+    ItemRepository itemRepository = ItemRepository();
+    QuerySnapshot querySnapshot = await incomingCollection.getDocuments();
+
+    await Future.forEach(querySnapshot.documents, (DocumentSnapshot ds) async {
+      Supplier supplier = await categoryRepository.getSupplier(uid: ds.data['supplier_id']);
+      Item item = await itemRepository.getItem(uid: ds.data['item_id']);
+
+      incomings.add(Incoming.fromMap({
+        'id': ds.documentID,
+        'amount': ds.data['amount'],
+        'date': ds.data['date'],
+        'supplier': supplier,
+        'item': item
+      }));
+    });
+
+
+    return incomings;
+  }
+
   Future<void> createIncoming({
     @required DateTime date,
     @required Supplier supplier,

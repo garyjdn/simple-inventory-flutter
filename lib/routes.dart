@@ -13,6 +13,7 @@ Map<String, Widget Function(BuildContext)> routes = {
   OutgoingMainScreen.routeName: (ctx) => OutgoingMainScreen(),
   OutgoingFormScreen.routeName: (ctx) => OutgoingFormScreen(),
   ReportScreen.routeName: (ctx) => ReportScreen(),
+  PdfViewerPage.routeName: (ctx) => PdfViewerPage(),
   ProfileScreen.routeName: (ctx) => ProfileScreen(),
   RequestItemMainScreen.routeName: (ctx) => RequestItemMainScreen(),
   RequestItemDetailMainScreen.routeName: (ctx) => RequestItemDetailMainScreen(),

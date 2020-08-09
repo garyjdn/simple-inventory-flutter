@@ -4,6 +4,8 @@ import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:inventoryapp/data/data.dart';
+import 'package:inventoryapp/modules/modules.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:path_provider/path_provider.dart';
@@ -17,15 +19,25 @@ class _TmpReportState extends State<TmpReport> {
   final _formKey = GlobalKey<FormState>();
   DateTime _selectedStartDate;
   DateTime _selectedEndDate;
+  bool _isLoading = false;
 
   List<String> _transactions = ['Incoming', 'Outgoing'];
   String _selectedTransaction;
 
-  _generatePDF(String transaction) async {
+  _generatePDF(
+    String transaction, 
+    DateTime startDate,
+    DateTime endDate
+  ) async {
+    setState(() => _isLoading = true);
+    List<Incoming> incomings;
+    List<Outgoing> outgoings;
     if(transaction == 'Incoming') {
-
+      IncomingRepository incomingRepository = IncomingRepository();
+      incomings = await incomingRepository.getAllData();
     } else {
-
+      OutgoingRepository outgoingRepository = OutgoingRepository();
+      outgoings = await outgoingRepository.getAllData();
     }
 
     final output = await getApplicationDocumentsDirectory();
@@ -34,16 +46,54 @@ class _TmpReportState extends State<TmpReport> {
       bold: pw.Font.ttf(await rootBundle.load("assets/fonts/roboto/Roboto-Bold.ttf")),
     );
     final pdf = pw.Document(theme: myTheme);
-    pdf.addPage(pw.Page(
+    pdf.addPage(pw.MultiPage(
       pageFormat: PdfPageFormat.a4,
-      build: (pw.Context context) {
-        return pw.Center(
-          child: pw.Text("Hello World"),
-        ); // Center
-      }));
-      
-    final file = File("${output.path}/$transaction - ${DateTime.now().toString()}.pdf");
+      build: (pw.Context context) => <pw.Widget>[
+        pw.Header(
+          level: 0,
+          child: pw.Row(
+            mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+            children: <pw.Widget>[
+              pw.Text('$transaction Report', textScaleFactor: 2),
+              pw.PdfLogo()
+            ])),
+        if(transaction == 'Incoming')
+        pw.Table.fromTextArray(context: context, data: <List<String>>[
+          <String>['Item', 'Supplier', 'Amount', 'Date'],
+          ...incomings.map((incoming) => <String>[
+              incoming.item.name,
+              incoming.supplier.name,
+              incoming.amount.toString(),
+              DateFormat('dd/MM/yyyy').format(incoming.date)
+            ]).toList(),
+        ]),
+
+        if(transaction == 'Outgoing')
+        pw.Table.fromTextArray(context: context, data: <List<String>>[
+          <String>['Item', 'PIC', 'Amount', 'Station', 'Date'],
+          ...outgoings.map((outgoing) => <String>[
+              outgoing.item.name,
+              outgoing.user.name,
+              outgoing.amount.toString(),
+              outgoing.station.name,
+              DateFormat('dd/MM/yyyy').format(outgoing.date)
+            ]).toList(),
+        ]),
+      ]));
+    String path = "${output.path}/$transaction - ${DateTime.now().toString()}.pdf";
+    print(path);
+    final file = File(path);
     await file.writeAsBytes(pdf.save());
+    setState(() => _isLoading = false);
+    Navigator.of(context).pushNamed(PdfViewerPage.routeName, arguments: path);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedTransaction = _transactions[0];
+    _selectedEndDate = DateTime.now();
+    _selectedStartDate = DateTime(_selectedEndDate.year, _selectedEndDate.month, _selectedEndDate.day - 1);
   }
 
   @override
@@ -193,27 +243,29 @@ class _TmpReportState extends State<TmpReport> {
                   color: Colors.blue[300],
                   onPressed: () {
                     if (_formKey.currentState.validate()) {
-                      _generatePDF(_selectedTransaction);
-                      // User user = state.user;
-                      // user.name = _nameCtrl.text;
-                      // user.email = _emailCtrl.text;
-                      // _profileBloc.add(EditProfileButtonPressed(
-                      //   user: user,
-                      //   image: _image
-                      // ));
+                      _generatePDF(_selectedTransaction, _selectedStartDate, _selectedEndDate);
                     }
                   },
-                  child: Container(
-                    height: 40,
-                    child: Center(
-                      child: Text(
-                        'Create',
-                        style: TextStyle(
-                          color: Colors.white
-                        )
+                  child: _isLoading
+                  ? SizedBox(
+                      width: 21,
+                      height: 21,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 3.0,
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                       )
-                    ),
-                  )
+                    )
+                  : Container(
+                      height: 40,
+                      child: Center(
+                        child: Text(
+                          'Generate',
+                          style: TextStyle(
+                            color: Colors.white
+                          )
+                        )
+                      ),
+                    )
                 )
               ],
             ),
