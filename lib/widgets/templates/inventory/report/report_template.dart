@@ -3,12 +3,14 @@ import 'dart:io';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:inventoryapp/data/data.dart';
 import 'package:inventoryapp/modules/modules.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:path_provider/path_provider.dart';
+import 'package:downloads_path_provider/downloads_path_provider.dart';
 
 class TmpReport extends StatefulWidget {
   @override
@@ -27,7 +29,8 @@ class _TmpReportState extends State<TmpReport> {
   _generatePDF(
     String transaction, 
     DateTime startDate,
-    DateTime endDate
+    DateTime endDate,
+    User user,
   ) async {
     setState(() => _isLoading = true);
     List<Incoming> incomings;
@@ -40,7 +43,7 @@ class _TmpReportState extends State<TmpReport> {
       outgoings = await outgoingRepository.getAllDataFilteredByDate(startDate, endDate);
     }
 
-    final output = await getApplicationDocumentsDirectory();
+    final output = await getTemporaryDirectory();
     var myTheme = pw.ThemeData.withFont(
       base: pw.Font.ttf(await rootBundle.load("assets/fonts/roboto/Roboto-Regular.ttf")),
       bold: pw.Font.ttf(await rootBundle.load("assets/fonts/roboto/Roboto-Bold.ttf")),
@@ -80,10 +83,14 @@ class _TmpReportState extends State<TmpReport> {
             ]).toList(),
         ]),
       ]));
-    String path = "${output.path}/$transaction - ${DateTime.now().toString()}.pdf";
+    Directory downloadsDirectory = await DownloadsPathProvider.downloadsDirectory;
+    String fileName = '$transaction.pdf';
+    String path = "${downloadsDirectory.path}/$fileName";
     print(path);
     final file = File(path);
-    await file.writeAsBytes(pdf.save());
+    File storedFile = await file.writeAsBytes(pdf.save());
+    print(storedFile.path);
+
     setState(() => _isLoading = false);
     Navigator.of(context).pushNamed(PdfViewerPage.routeName, arguments: path);
   }
@@ -117,19 +124,106 @@ class _TmpReportState extends State<TmpReport> {
           title: Text('Report'),
           centerTitle: true,
         ),
-        body: Container(
-          padding: EdgeInsets.all(15),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              children: <Widget>[
-                SizedBox(height: 10),
-                Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: DateTimeField(
+        body: BlocBuilder<AuthenticationBloc, AuthenticationState>(
+          builder: (context, authState) {
+            if(authState is AuthenticationSuccess) {
+              return Container(
+                padding: EdgeInsets.all(15),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    children: <Widget>[
+                      SizedBox(height: 10),
+                      Row(
+                        children: <Widget>[
+                          Expanded(
+                            child: DateTimeField(
+                              decoration: InputDecoration(
+                                labelText: 'Date Start',
+                                filled: true,
+                                fillColor: Colors.white,
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Colors.blue[600],
+                                    width: 1
+                                  ),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Colors.blue[600],
+                                    width: 1
+                                  ),
+                                )
+                              ),
+                              initialValue: _selectedStartDate ?? DateTime.now(),
+                              format: DateFormat("yyyy-MM-dd"),
+                              onShowPicker: (context, currentValue) {
+                                return showDatePicker(
+                                    context: context,
+                                    firstDate: DateTime(1900),
+                                    initialDate: currentValue ?? DateTime.now(),
+                                    lastDate: DateTime(2100));
+                              },
+                              onChanged: (DateTime dt) => _selectedStartDate = dt,
+                              validator: (value) {
+                                if (value == null) {
+                                  return 'This field is required';
+                                }
+                                return null;
+                              },
+                            ),
+                          ),
+                          SizedBox(width: 10),
+                          Expanded(
+                            child: DateTimeField(
+                              decoration: InputDecoration(
+                                labelText: 'Date End',
+                                filled: true,
+                                fillColor: Colors.white,
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Colors.blue[600],
+                                    width: 1
+                                  ),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Colors.blue[600],
+                                    width: 1
+                                  ),
+                                )
+                              ),
+                              initialValue: _selectedEndDate ?? DateTime.now(),
+                              format: DateFormat("yyyy-MM-dd"),
+                              onShowPicker: (context, currentValue) {
+                                return showDatePicker(
+                                    context: context,
+                                    firstDate: DateTime(1900),
+                                    initialDate: currentValue ?? DateTime.now(),
+                                    lastDate: DateTime(2100));
+                              },
+                              onChanged: (DateTime dt) => _selectedEndDate = dt,
+                              validator: (value) {
+                                if (value == null) {
+                                  return 'This field is required';
+                                }
+                                return null;
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 20),
+                      DropdownButtonFormField<String>(
+                        value: _selectedTransaction ?? _transactions[0],
+                        items: _transactions.map((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
                         decoration: InputDecoration(
-                          labelText: 'Date Start',
+                          labelText: 'Transaction',
                           filled: true,
                           fillColor: Colors.white,
                           enabledBorder: OutlineInputBorder(
@@ -145,16 +239,7 @@ class _TmpReportState extends State<TmpReport> {
                             ),
                           )
                         ),
-                        initialValue: _selectedStartDate ?? DateTime.now(),
-                        format: DateFormat("yyyy-MM-dd"),
-                        onShowPicker: (context, currentValue) {
-                          return showDatePicker(
-                              context: context,
-                              firstDate: DateTime(1900),
-                              initialDate: currentValue ?? DateTime.now(),
-                              lastDate: DateTime(2100));
-                        },
-                        onChanged: (DateTime dt) => _selectedStartDate = dt,
+                        onChanged: (value) => setState(() => _selectedTransaction = value),
                         validator: (value) {
                           if (value == null) {
                             return 'This field is required';
@@ -162,114 +247,48 @@ class _TmpReportState extends State<TmpReport> {
                           return null;
                         },
                       ),
-                    ),
-                    SizedBox(width: 10),
-                    Expanded(
-                      child: DateTimeField(
-                        decoration: InputDecoration(
-                          labelText: 'Date End',
-                          filled: true,
-                          fillColor: Colors.white,
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Colors.blue[600],
-                              width: 1
-                            ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Colors.blue[600],
-                              width: 1
-                            ),
-                          )
+                      SizedBox(height: 20),
+                      Container(
+                        width: double.infinity,
+                        child: RaisedButton(
+                          elevation: 0,
+                          color: Colors.blue[300],
+                          onPressed: () {
+                            if (_formKey.currentState.validate()) {
+                              _generatePDF(_selectedTransaction, _selectedStartDate, _selectedEndDate, authState.user);
+                            }
+                          },
+                          child: _isLoading
+                          ? SizedBox(
+                              width: 21,
+                              height: 21,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 3.0,
+                                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                              )
+                            )
+                          : Container(
+                              height: 40,
+                              child: Center(
+                                child: Text(
+                                  'Generate',
+                                  style: TextStyle(
+                                    color: Colors.white
+                                  )
+                                )
+                              ),
+                            )
                         ),
-                        initialValue: _selectedEndDate ?? DateTime.now(),
-                        format: DateFormat("yyyy-MM-dd"),
-                        onShowPicker: (context, currentValue) {
-                          return showDatePicker(
-                              context: context,
-                              firstDate: DateTime(1900),
-                              initialDate: currentValue ?? DateTime.now(),
-                              lastDate: DateTime(2100));
-                        },
-                        onChanged: (DateTime dt) => _selectedEndDate = dt,
-                        validator: (value) {
-                          if (value == null) {
-                            return 'This field is required';
-                          }
-                          return null;
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 20),
-                DropdownButtonFormField<String>(
-                  value: _selectedTransaction ?? _transactions[0],
-                  items: _transactions.map((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
-                  decoration: InputDecoration(
-                    labelText: 'Transaction',
-                    filled: true,
-                    fillColor: Colors.white,
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.blue[600],
-                        width: 1
-                      ),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.blue[600],
-                        width: 1
-                      ),
-                    )
-                  ),
-                  onChanged: (value) => setState(() => _selectedTransaction = value),
-                  validator: (value) {
-                    if (value == null) {
-                      return 'This field is required';
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(height: 20),
-                RaisedButton(
-                  elevation: 0,
-                  color: Colors.blue[300],
-                  onPressed: () {
-                    if (_formKey.currentState.validate()) {
-                      _generatePDF(_selectedTransaction, _selectedStartDate, _selectedEndDate);
-                    }
-                  },
-                  child: _isLoading
-                  ? SizedBox(
-                      width: 21,
-                      height: 21,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 3.0,
-                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                       )
-                    )
-                  : Container(
-                      height: 40,
-                      child: Center(
-                        child: Text(
-                          'Generate',
-                          style: TextStyle(
-                            color: Colors.white
-                          )
-                        )
-                      ),
-                    )
-                )
-              ],
-            ),
-          ),
+                    ],
+                  ),
+                ),
+              );
+            } else {
+              return Container();
+            }
+            
+          }
         )
       ),
     );
