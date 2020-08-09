@@ -3,6 +3,7 @@ export './incoming.dart';
 export './item.dart';
 export './outgoing.dart';
 export './request_item.dart';
+export './request_item_detail.dart';
 export './station.dart';
 export './supplier.dart';
 export './unit.dart';

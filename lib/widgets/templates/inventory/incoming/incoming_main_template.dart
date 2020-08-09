@@ -109,7 +109,7 @@ class TmpIncomingMain extends StatelessWidget {
                               children: <Widget>[
                                 Text(incoming.item.name),
                                 SizedBox(height: 5),
-                                Text(DateFormat('dd/MM/yy').format(incoming.date)),
+                                Text(DateFormat('dd/MM/yyyy').format(incoming.date)),
                               ],
                             ),
                             Column(
