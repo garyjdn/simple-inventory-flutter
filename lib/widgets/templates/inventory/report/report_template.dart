@@ -34,10 +34,10 @@ class _TmpReportState extends State<TmpReport> {
     List<Outgoing> outgoings;
     if(transaction == 'Incoming') {
       IncomingRepository incomingRepository = IncomingRepository();
-      incomings = await incomingRepository.getAllData();
+      incomings = await incomingRepository.getAllDataFilteredByDate(startDate, endDate);
     } else {
       OutgoingRepository outgoingRepository = OutgoingRepository();
-      outgoings = await outgoingRepository.getAllData();
+      outgoings = await outgoingRepository.getAllDataFilteredByDate(startDate, endDate);
     }
 
     final output = await getApplicationDocumentsDirectory();
