@@ -109,7 +109,7 @@ class TmpOutgoingMain extends StatelessWidget {
                               children: <Widget>[
                                 Text(outgoing.item.name),
                                 SizedBox(height: 5),
-                                Text(DateFormat('dd/MM/yy').format(outgoing.date)),
+                                Text(DateFormat('dd/MM/yyyy').format(outgoing.date)),
                               ],
                             ),
                             Column(

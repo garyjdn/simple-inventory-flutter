@@ -34,7 +34,11 @@ class ItemRepository {
     UnitRepository unitRepository = UnitRepository();
     Unit unit = await unitRepository.getUnit(uid: ds.data['unit_id']);
 
+    CategoryRepository categoryRepository = CategoryRepository();
+    Category category = await categoryRepository.getCategory(uid: ds.data['category_id']);
+
     item.unit = unit;
+    item.category = category;
 
     return item; 
   }

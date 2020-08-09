@@ -9,6 +9,7 @@ export './outgoing/outgoing_bloc.dart';
 export './outgoing_form/outgoing_form_bloc.dart';
 export './report/report_bloc.dart';
 export './request_item/request_item_bloc.dart';
+export './request_item_detail/request_item_detail_bloc.dart';
 export './station/station_bloc.dart';
 export './station_form/station_form_bloc.dart';
 export './supplier/supplier_bloc.dart';
