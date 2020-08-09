@@ -5,6 +5,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:inventoryapp/data/data.dart';
 import 'package:inventoryapp/modules/modules.dart';
 import 'package:inventoryapp/shared/shared.dart';
+import 'package:inventoryapp/widgets/components/custom_dialog.dart' as customDialog;
+import 'package:inventoryapp/widgets/widgets.dart';
 
 class AppDrawer extends StatefulWidget {
   @override
@@ -96,9 +98,18 @@ class _AppDrawerState extends State<AppDrawer> {
                               }
                             ),
                             ListTile(
-                              onTap: () {
-                                Navigator.of(context).pop();
-                                Navigator.of(context).pushNamed(UserMainScreen.routeName);
+                              onTap: () async {
+                                if(authState.user.role == 'Admin') {
+                                  Navigator.of(context).pop();
+                                  Navigator.of(context).pushNamed(UserMainScreen.routeName);
+                                } else {
+                                  await customDialog.showDialog(
+                                    context: context,
+                                    builder: (_) => MessageDialog(
+                                      message: 'You dont have any permission.'
+                                    )
+                                  );
+                                }
                               },
                               leading: Icon(
                                 FontAwesomeIcons.users, 
@@ -107,9 +118,18 @@ class _AppDrawerState extends State<AppDrawer> {
                               title: Text('User')
                             ),
                             ListTile(
-                              onTap: () {
-                                Navigator.of(context).pop();
-                                Navigator.of(context).pushNamed(StationMainScreen.routeName);
+                              onTap: () async {
+                                if(authState.user.role == 'Admin') {
+                                  Navigator.of(context).pop();
+                                  Navigator.of(context).pushNamed(StationMainScreen.routeName);
+                                } else {
+                                  await customDialog.showDialog(
+                                    context: context,
+                                    builder: (_) => MessageDialog(
+                                      message: 'You dont have any permission.'
+                                    )
+                                  );
+                                }
                               },
                               leading: Icon(
                                 FontAwesomeIcons.building,

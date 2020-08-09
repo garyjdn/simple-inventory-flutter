@@ -108,198 +108,200 @@ class TmpRequestItemDetailMain extends StatelessWidget {
       ),
       body: BlocBuilder<AuthenticationBloc, AuthenticationState>(
         builder: (context, authState) {
-          if(authState is AuthenticationSuccess)
-          return BlocConsumer<RequestItemDetailBloc, RequestItemDetailState>(
-            listener: (context, state) async {
-              if(state is RequestItemDetailSubmitSuccess) {
-                await customDialog.showDialog(
-                  context: context,
-                  builder: (_) => MessageDialog(
-                    message: state.message
-                  )
-                );
-                _requestItemDetailBloc.add(LoadRequestItemDetailStarted(requestItem: requestItem));
-              } else if(state is RequestItemDetailDeleteSuccess) {
-                await customDialog.showDialog(
-                  context: context,
-                  builder: (_) => MessageDialog(
-                    message: state.message
-                  )
-                );
-                _requestItemDetailBloc.add(LoadRequestItemDetailStarted(requestItem: requestItem));
-              } else if(state is RequestItemDetailSubmitStatusSuccess) {
-                Navigator.of(context).pop(true);
-              }
-            },
-            buildWhen: (prevState, state) {
-              if(state is RequestItemDetailLoadStarted
-              || state is RequestItemDetailLoadSuccess) {
-                return true;
-              }
-              return false;
-            },
-            builder: (context, state) {
-              if(state is RequestItemDetailLoadStarted) {
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
-              } else if(state is RequestItemDetailLoadSuccess) {
-                return ListView(
-                  padding: EdgeInsets.all(15.0),
-                  children: [
-                    Card(
-                      elevation: 0,
-                      child: Container(
-                        padding: EdgeInsets.all(10),
-                        child: Column(
-                          children: <Widget>[
-                            Row(
-                              children: <Widget>[
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Text('PIC'),
-                                    SizedBox(height: 3),
-                                    Text('Station'),
-                                    SizedBox(height: 3),
-                                    Text('Date'),
-                                    SizedBox(height: 3),
-                                    Text('Status'),
-                                  ],
-                                ),
-                                SizedBox(width: 8),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Text(':  ${requestItem.requestUser.name}'),
-                                    SizedBox(height: 3),
-                                    Text(':  ${requestItem.station.name}'),
-                                    SizedBox(height: 3),
-                                    Text(':  ${DateFormat('dd/MM/yyyy').format(requestItem.date)}'),
-                                    SizedBox(height: 3),
-                                    Text(':  ${requestItem.requestStatusToString(requestItem.requestStatus)}'),
-                                  ],
-                                )
-                                
-                              ],
-                            ),
-                            Divider(),
-                            if(requestItem.requestStatus == RequestStatus.WAITING)
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: <Widget>[
-                                RaisedButton(
-                                  elevation: 0,
-                                  onPressed: () async {
-                                    bool confirm = await confirmDialog(context, 'Approve');
-                                    if(confirm != null && confirm) {
-                                      RequestItem ri = requestItem
-                                        ..reviewUser = authState.user
-                                        ..requestStatus = RequestStatus.APPROVED;
-                                      _requestItemDetailBloc.add(EditRequestItemButtonPressed(requestItem: ri));
-                                    }
-                                  },
-                                  color: Colors.blue[300],
-                                  child: Text(
-                                    'Approve',
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      color: Colors.white
-                                    )
+          if(authState is AuthenticationSuccess) {
+            return BlocConsumer<RequestItemDetailBloc, RequestItemDetailState>(
+              listener: (context, state) async {
+                if(state is RequestItemDetailSubmitSuccess) {
+                  await customDialog.showDialog(
+                    context: context,
+                    builder: (_) => MessageDialog(
+                      message: state.message
+                    )
+                  );
+                  _requestItemDetailBloc.add(LoadRequestItemDetailStarted(requestItem: requestItem));
+                } else if(state is RequestItemDetailDeleteSuccess) {
+                  await customDialog.showDialog(
+                    context: context,
+                    builder: (_) => MessageDialog(
+                      message: state.message
+                    )
+                  );
+                  _requestItemDetailBloc.add(LoadRequestItemDetailStarted(requestItem: requestItem));
+                } else if(state is RequestItemDetailSubmitStatusSuccess) {
+                  Navigator.of(context).pop(true);
+                }
+              },
+              buildWhen: (prevState, state) {
+                if(state is RequestItemDetailLoadStarted
+                || state is RequestItemDetailLoadSuccess) {
+                  return true;
+                }
+                return false;
+              },
+              builder: (context, state) {
+                if(state is RequestItemDetailLoadStarted) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else if(state is RequestItemDetailLoadSuccess) {
+                  return ListView(
+                    padding: EdgeInsets.all(15.0),
+                    children: [
+                      Card(
+                        elevation: 0,
+                        child: Container(
+                          padding: EdgeInsets.all(10),
+                          child: Column(
+                            children: <Widget>[
+                              Row(
+                                children: <Widget>[
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Text('PIC'),
+                                      SizedBox(height: 3),
+                                      Text('Station'),
+                                      SizedBox(height: 3),
+                                      Text('Date'),
+                                      SizedBox(height: 3),
+                                      Text('Status'),
+                                    ],
                                   ),
-                                ),
-                                SizedBox(width: 5),
-                                RaisedButton(
-                                  elevation: 0,
-                                  onPressed: () async {
-                                    bool confirm = await confirmDialog(context, 'Reject');
-                                    if(confirm != null && confirm) {
-                                      RequestItem ri = requestItem
-                                        ..reviewUser = authState.user
-                                        ..requestStatus = RequestStatus.REJECTED;
-                                      _requestItemDetailBloc.add(EditRequestItemButtonPressed(requestItem: ri));
-                                    }
-                                  },
-                                  color: Colors.red[300],
-                                  child: Text(
-                                    'Reject',
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      color: Colors.white
-                                    )
-                                  ),
-                                )
-                              ],
-                            )
-                          ],
-                        )
-                      )
-                    ),
-
-                    ...state.requestItemDetails.map((requestItemDetail) => Card(
-                      elevation: 0,
-                      child: Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Text(requestItemDetail.item.name),
-                                    SizedBox(height: 5),
-                                    Text(requestItemDetail.item.category.name),
-                                  ],
-                                ),
-                                Column(
-                                  children: <Widget>[
-                                    Text(requestItemDetail.amount.toString()),
-                                    SizedBox(height: 5),
-                                    Text(requestItemDetail.item.unit.name)
-                                  ],
-                                ),
-                                if(requestItem.requestStatus == RequestStatus.WAITING)
-                                Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: <Widget>[
-                                    IconButton(
-                                      onPressed: () => deleteDialog(context, requestItemDetail),
-                                      icon: Icon(FontAwesomeIcons.trash),
-                                      iconSize: 18,
+                                  SizedBox(width: 8),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Text(':  ${requestItem.requestUser.name}'),
+                                      SizedBox(height: 3),
+                                      Text(':  ${requestItem.station.name}'),
+                                      SizedBox(height: 3),
+                                      Text(':  ${DateFormat('dd/MM/yyyy').format(requestItem.date)}'),
+                                      SizedBox(height: 3),
+                                      Text(':  ${requestItem.requestStatusToString(requestItem.requestStatus)}'),
+                                    ],
+                                  )
+                                  
+                                ],
+                              ),
+                              Divider(),
+                              if(authState.user.role == 'Operator' && requestItem.requestStatus == RequestStatus.WAITING)
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: <Widget>[
+                                  RaisedButton(
+                                    elevation: 0,
+                                    onPressed: () async {
+                                      bool confirm = await confirmDialog(context, 'Approve');
+                                      if(confirm != null && confirm) {
+                                        RequestItem ri = requestItem
+                                          ..reviewUser = authState.user
+                                          ..requestStatus = RequestStatus.APPROVED;
+                                        _requestItemDetailBloc.add(EditRequestItemButtonPressed(requestItem: ri));
+                                      }
+                                    },
+                                    color: Colors.blue[300],
+                                    child: Text(
+                                      'Approve',
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.white
+                                      )
                                     ),
-                                    // SizedBox(width: 8),
-                                    IconButton(
-                                      onPressed: () async {
-                                        final fetch = await showForm(context, 'Edit', state.items, requestItem, _requestItemDetailBloc, requestItemDetail: requestItemDetail);
-                                        if(fetch != null && fetch) {
-                                          _requestItemDetailBloc.add(LoadRequestItemDetailStarted(requestItem: requestItem));
-                                        }
-                                      },
-                                      icon: Icon(FontAwesomeIcons.solidEdit),
-                                      iconSize: 18,
-                                    )
-                                  ],
-                                )
-                              ],
-                            ),
-                          ]
-                          
-                        ),
-                      )
-                    )).toList(),
+                                  ),
+                                  SizedBox(width: 5),
+                                  RaisedButton(
+                                    elevation: 0,
+                                    onPressed: () async {
+                                      bool confirm = await confirmDialog(context, 'Reject');
+                                      if(confirm != null && confirm) {
+                                        RequestItem ri = requestItem
+                                          ..reviewUser = authState.user
+                                          ..requestStatus = RequestStatus.REJECTED;
+                                        _requestItemDetailBloc.add(EditRequestItemButtonPressed(requestItem: ri));
+                                      }
+                                    },
+                                    color: Colors.red[300],
+                                    child: Text(
+                                      'Reject',
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.white
+                                      )
+                                    ),
+                                  )
+                                ],
+                              )
+                            ],
+                          )
+                        )
+                      ),
+
+                      ...state.requestItemDetails.map((requestItemDetail) => Card(
+                        elevation: 0,
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Text(requestItemDetail.item.name),
+                                      SizedBox(height: 5),
+                                      Text(requestItemDetail.item.category.name),
+                                    ],
+                                  ),
+                                  Column(
+                                    children: <Widget>[
+                                      Text(requestItemDetail.amount.toString()),
+                                      SizedBox(height: 5),
+                                      Text(requestItemDetail.item.unit.name)
+                                    ],
+                                  ),
+                                  if(requestItem.requestStatus == RequestStatus.WAITING)
+                                  Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: <Widget>[
+                                      IconButton(
+                                        onPressed: () => deleteDialog(context, requestItemDetail),
+                                        icon: Icon(FontAwesomeIcons.trash),
+                                        iconSize: 18,
+                                      ),
+                                      // SizedBox(width: 8),
+                                      IconButton(
+                                        onPressed: () async {
+                                          final fetch = await showForm(context, 'Edit', state.items, requestItem, _requestItemDetailBloc, requestItemDetail: requestItemDetail);
+                                          if(fetch != null && fetch) {
+                                            _requestItemDetailBloc.add(LoadRequestItemDetailStarted(requestItem: requestItem));
+                                          }
+                                        },
+                                        icon: Icon(FontAwesomeIcons.solidEdit),
+                                        iconSize: 18,
+                                      )
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ]
+                            
+                          ),
+                        )
+                      )).toList(),
+                      
                     
-                   
-                  ]
-                );
-              } else {
-                return Container();
+                    ]
+                  );
+                } else {
+                  return Container();
+                }
               }
-              
-            }
-          );
+            );
+          } else {
+            return Container();
+          }
         }
       )
     );
