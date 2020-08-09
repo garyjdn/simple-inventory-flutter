@@ -373,7 +373,7 @@ class TmpDashboard extends StatelessWidget {
                                 onTap: () async {
                                   if(authState.user.role == 'Admin'
                                   || authState.user.role == 'Operator') {
-                                    Navigator.of(context).pushNamed(OutgoingMainScreen.routeName);
+                                    Navigator.of(context).pushNamed(ReportScreen.routeName);
                                   } else {
                                     await customDialog.showDialog(
                                       context: context,

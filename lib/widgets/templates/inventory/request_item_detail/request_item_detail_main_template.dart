@@ -7,7 +7,6 @@ import 'package:inventoryapp/data/data.dart';
 import 'package:inventoryapp/modules/modules.dart';
 import 'package:inventoryapp/widgets/widgets.dart';
 import 'package:inventoryapp/widgets/components/custom_dialog.dart' as customDialog;
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class TmpRequestItemDetailMain extends StatelessWidget {
   RequestItemDetailBloc _requestItemDetailBloc;
@@ -98,7 +97,7 @@ class TmpRequestItemDetailMain extends StatelessWidget {
               builder: (context, state) {
                 if(state is RequestItemDetailLoadSuccess 
                 && requestItem.requestStatus == RequestStatus.WAITING
-                && authState.user.role == 'User') {
+                && authState.user.role == 'Staff') {
                   return FloatingActionButton(
                     backgroundColor: Colors.blue[300],
                     child: Icon(Icons.add),
@@ -273,7 +272,7 @@ class TmpRequestItemDetailMain extends StatelessWidget {
                                     ],
                                   ),
                                   if(requestItem.requestStatus == RequestStatus.WAITING
-                                  && authState.user.role == 'User')
+                                  && authState.user.role == 'Staff')
                                   Row(
                                     mainAxisSize: MainAxisSize.min,
                                     children: <Widget>[
