@@ -41,15 +41,20 @@ class RequestRepository {
   //   }; 
   // }
 
-  Future<void> createRequestItem({
+  Future<RequestItem> createRequestItem({
+    @required Station station,
     @required User user,
   }) async {
     RequestItem request = RequestItem(
       date: DateTime.now(),
       requestUser: user,
+      station: station,
       status: 'Waiting'
     );
-    await requestCollection.add(request.toDocument());
+    DocumentReference documentReference = await requestCollection.add(request.toDocument());
+    request.id = documentReference.documentID;
+
+    return request;
   }
 
   Future<void> updateRequestItem({

@@ -17,9 +17,11 @@ class RequestItemLoadStarted extends RequestItemState {
 
 class RequestItemLoadSuccess extends RequestItemState {
   final List<RequestItem> requestItems;
+  final List<Station> stations;
 
   RequestItemLoadSuccess({
-    @required this.requestItems
+    @required this.requestItems,
+    @required this.stations,
   }):
     assert(requestItems != null);
 
@@ -58,9 +60,9 @@ class RequestItemSubmitInProgress extends RequestItemState {
 }
 
 class RequestItemSubmitSuccess extends RequestItemState {
-  final String message;
+  final RequestItem requestItem;
 
-  RequestItemSubmitSuccess({this.message});
+  RequestItemSubmitSuccess({this.requestItem});
 
   @override
   List<Object> get props => [];

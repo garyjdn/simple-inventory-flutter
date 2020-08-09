@@ -23,7 +23,6 @@ class RequestItem {
     this.reviewUser,
     String status
   }) {
-    assert(id != null);
     assert(status != null);
     this.requestStatus = stringStatusToEnum(status);
   }
@@ -54,7 +53,7 @@ class RequestItem {
       'date': this.date,
       'request_user': this.requestUser.toMap(),
       'review_user': this.reviewUser.toMap(),
-      'status': requestStatusToString(this.requestStatus)
+      'status': this.requestStatus is String? this.requestStatus : requestStatusToString(this.requestStatus)
     };
   }
 
@@ -93,8 +92,8 @@ class RequestItem {
       'date': this.date,
       'station_id': this.station.id,
       'request_user': this.requestUser.id,
-      'review_user': this.reviewUser.id,
-      'status':requestStatusToString(this.requestStatus)
+      'review_user': this.reviewUser?.id,
+      'status': this.requestStatus is String? this.requestStatus : requestStatusToString(this.requestStatus)
     };
   }
 

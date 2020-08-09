@@ -49,7 +49,23 @@ class TmpRequestItemMain extends StatelessWidget {
       )
     );
   }
-  
+
+  Future<dynamic> showForm(
+    BuildContext context, 
+    User user, 
+    List<Station> stations,
+    RequestItemBloc requestItemBloc,
+  ) {
+    return showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (context) => RequestModal(
+        user: user,
+        stations: stations,
+        requestItemBloc: requestItemBloc,
+      )
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,24 +86,34 @@ class TmpRequestItemMain extends StatelessWidget {
               centerTitle: true,
             ),
             floatingActionButton: authState.user.role == 'User' 
-            ? FloatingActionButton(
-                backgroundColor: Colors.blue[300],
-                child: Icon(Icons.add),
-                onPressed: () async {
-                  _requestItemBloc.add(AddRequestItemButtonPressed(user: authState.user));
-                },
-              )
+            ? BlocBuilder<RequestItemBloc, RequestItemState>(
+              builder: (context, state) {
+                if(state is RequestItemLoadSuccess) {
+                  return FloatingActionButton(
+                    backgroundColor: Colors.blue[300],
+                    child: Icon(Icons.add),
+                    onPressed: () async {
+                      showForm(context, authState.user, state.stations, _requestItemBloc);
+                      // _requestItemBloc.add(AddRequestItemButtonPressed(user: authState.user, station));
+                    },
+                  );
+                } else {
+                  return Container();
+                }
+              }
+            )
             : null,
             body: BlocConsumer<RequestItemBloc, RequestItemState>(
               listener: (context, state) async {
                 if(state is RequestItemSubmitSuccess) {
-                  await customDialog.showDialog(
-                    context: context,
-                    builder: (_) => MessageDialog(
-                      message: state.message
-                    )
-                  );
-                  Navigator.of(context).pop(true);
+                  Navigator.of(context).pushNamed(RequestItemDetailMainScreen.routeName, arguments: state.requestItem);
+                  // await customDialog.showDialog(
+                  //   context: context,
+                  //   builder: (_) => MessageDialog(
+                  //     message: state.message
+                  //   )
+                  // );
+                  // Navigator.of(context).pop(true);
                 } else if(state is RequestItemDeleteSuccess) {
                   await customDialog.showDialog(
                     context: context,
@@ -154,7 +180,7 @@ class TmpRequestItemMain extends StatelessWidget {
                                               : Colors.red,
                                         ),
                                         child: Text(requestItem.requestStatusToString(requestItem.requestStatus), style: 
-                                          TextStyle(color: Colors.white)),
+                                          TextStyle(color: Colors.white, fontSize: 12)),
                                       ),
                                     ],
                                   )

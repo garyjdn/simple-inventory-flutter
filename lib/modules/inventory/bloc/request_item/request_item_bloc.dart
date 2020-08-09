@@ -38,7 +38,13 @@ class RequestItemBloc extends Bloc<RequestItemEvent, RequestItemState> {
       request.requestUser = user;
     });
     
-    yield RequestItemLoadSuccess(requestItems: requestItems);
+    StationRepository _stationRepository = StationRepository();
+    List<Station> stations = await _stationRepository.getAllData();
+
+    yield RequestItemLoadSuccess(
+      requestItems: requestItems,
+      stations: stations
+    );
   }
 
   Stream<RequestItemState> _deleteRequestItem(DeleteRequestItemButtonPressed event) async* {
@@ -51,10 +57,11 @@ class RequestItemBloc extends Bloc<RequestItemEvent, RequestItemState> {
   Stream<RequestItemState> _addRequestItem(AddRequestItemButtonPressed event) async* {
     yield RequestItemSubmitInProgress();
     RequestRepository _requestItemRepository = RequestRepository();
-    await _requestItemRepository.createRequestItem(
+    RequestItem requestItem = await _requestItemRepository.createRequestItem(
+      station: event.station,
       user: event.user,
     );
-    yield RequestItemSubmitSuccess(message: 'Request Created');
+    yield RequestItemSubmitSuccess(requestItem: requestItem);
   }
 
   // Stream<RequestItemState> _editRequestItem(EditRequestItemButtonPressed event) async* {

@@ -20,10 +20,11 @@ class DeleteRequestItemButtonPressed extends RequestItemEvent {
 }
 class AddRequestItemButtonPressed extends RequestItemEvent {
   final User user;
-
+  final Station station;
 
   AddRequestItemButtonPressed({
-    @required this.user
+    @required this.user,
+    @required this.station,
   }):
     assert(user != null);
 

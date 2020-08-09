@@ -91,20 +91,31 @@ class TmpRequestItemDetailMain extends StatelessWidget {
         title: Text('Request Detail'),
         centerTitle: true,
       ),
-      floatingActionButton: BlocBuilder<RequestItemDetailBloc, RequestItemDetailState>(
-        builder: (context, state) {
-          if(state is RequestItemDetailLoadSuccess && requestItem.requestStatus == RequestStatus.WAITING) {
-            return FloatingActionButton(
-              backgroundColor: Colors.blue[300],
-              child: Icon(Icons.add),
-              onPressed: () {
-                showForm(context, 'Add', state.items, requestItem, _requestItemDetailBloc);
+      floatingActionButton: BlocBuilder<AuthenticationBloc, AuthenticationState>(
+        builder: (context, authState) {
+          if(authState is AuthenticationSuccess) {
+            return BlocBuilder<RequestItemDetailBloc, RequestItemDetailState>(
+              builder: (context, state) {
+                if(state is RequestItemDetailLoadSuccess 
+                && requestItem.requestStatus == RequestStatus.WAITING
+                && authState.user.role == 'User') {
+                  return FloatingActionButton(
+                    backgroundColor: Colors.blue[300],
+                    child: Icon(Icons.add),
+                    onPressed: () {
+                      showForm(context, 'Add', state.items, requestItem, _requestItemDetailBloc);
+                    },
+                  );
+                } else {
+                  return Container();
+                }
               },
             );
           } else {
             return Container();
           }
-        },
+          
+        }
       ),
       body: BlocBuilder<AuthenticationBloc, AuthenticationState>(
         builder: (context, authState) {
@@ -261,7 +272,8 @@ class TmpRequestItemDetailMain extends StatelessWidget {
                                       Text(requestItemDetail.item.unit.name)
                                     ],
                                   ),
-                                  if(requestItem.requestStatus == RequestStatus.WAITING)
+                                  if(requestItem.requestStatus == RequestStatus.WAITING
+                                  && authState.user.role == 'User')
                                   Row(
                                     mainAxisSize: MainAxisSize.min,
                                     children: <Widget>[
