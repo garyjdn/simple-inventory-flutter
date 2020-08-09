@@ -49,7 +49,7 @@ class User extends Equatable {
   Map<String, dynamic> toDocument() {
     return {
       'name': this.name,
-      'image': this.image,
+      'image': this.image ?? "",
       'email': this.email,
       'role': this.role
     };
