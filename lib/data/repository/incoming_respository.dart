@@ -27,11 +27,15 @@ class IncomingRepository {
     return incomings;
   }
 
-  Future<List<Incoming>> getAllDataFilteredWithDate(DateTime startDate, DateTime endDate) async {
+  Future<List<Incoming>> getAllDataFilteredByDate(DateTime startDate, DateTime endDate) async {
     List<Incoming> incomings = [];
     SupplierRepository categoryRepository = SupplierRepository();
     ItemRepository itemRepository = ItemRepository();
-    QuerySnapshot querySnapshot = await incomingCollection.getDocuments();
+    QuerySnapshot querySnapshot = await incomingCollection
+        .where('date', isGreaterThanOrEqualTo: startDate)
+        .where('date', isLessThan: DateTime(endDate.year, endDate.month, endDate.day + 1))
+        .orderBy('date')
+        .getDocuments();
 
     await Future.forEach(querySnapshot.documents, (DocumentSnapshot ds) async {
       Supplier supplier = await categoryRepository.getSupplier(uid: ds.data['supplier_id']);

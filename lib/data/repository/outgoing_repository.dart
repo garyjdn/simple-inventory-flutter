@@ -30,6 +30,36 @@ class OutgoingRepository {
     return outgoings;
   }
 
+  Future<List<Outgoing>> getAllDataFilteredByDate(DateTime startDate, DateTime endDate) async {
+    List<Outgoing> outgoings = [];
+    UserRepository categoryRepository = UserRepository();
+    ItemRepository itemRepository = ItemRepository();
+    StationRepository stationRepository = StationRepository();
+    QuerySnapshot querySnapshot = await outgoingCollection
+        .where('date', isGreaterThanOrEqualTo: startDate)
+        .where('date', isLessThan: DateTime(endDate.year, endDate.month, endDate.day + 1))
+        .orderBy('date')
+        .getDocuments();
+
+    await Future.forEach(querySnapshot.documents, (DocumentSnapshot ds) async {
+      User user = await categoryRepository.getUser(uid: ds.data['user_id']);
+      Item item = await itemRepository.getItem(uid: ds.data['item_id']);
+      Station station = await stationRepository.getStation(uid: ds.data['station_id']);
+
+      outgoings.add(Outgoing.fromMap({
+        'id': ds.documentID,
+        'amount': ds.data['amount'],
+        'date': ds.data['date'],
+        'user': user,
+        'item': item,
+        'station': station 
+      }));
+    });
+
+
+    return outgoings;
+  }
+
   Future<void> createOutgoing({
     @required DateTime date,
     @required User user,
