@@ -5,14 +5,24 @@ import 'package:inventoryapp/data/data.dart';
 class RequestDetailRepository {
   final requestItemCollection = Firestore.instance.collection('request_items');
   Future<List<RequestItemDetail>> getRequestDetailByRequestId({
-    RequestItem requestItem
+    RequestItem requestItem,
+    includeDeleted = false,
   }) async {
     List<RequestItemDetail> requestItems = [];
 
     ItemRepository itemRepository = ItemRepository();
-    QuerySnapshot querySnapshot = await requestItemCollection
+    QuerySnapshot querySnapshot;
+
+    if(!includeDeleted) {
+      querySnapshot = await requestItemCollection
+        .where('request_id', isEqualTo: requestItem.id)
+        .where('deleted', isEqualTo: false)
+        .getDocuments();
+    } else {
+      querySnapshot = await requestItemCollection
         .where('request_id', isEqualTo: requestItem.id)
         .getDocuments();
+    }
 
     await Future.forEach(querySnapshot.documents, (DocumentSnapshot ds) async {
       Item item = await itemRepository.getItem(uid: ds.data['item_id']);
@@ -27,50 +37,6 @@ class RequestDetailRepository {
 
     return requestItems;
   }
-
-  // Future<RequestItemDetail> getRequestDetail({
-  //   @required String uid, 
-  //   RequestItem request,
-  //   Item i,
-  // }) async {
-  //   assert(uid != null);
-  //   DocumentSnapshot ds = await stationCollection.document(uid).get(); 
-  //   RequestItemDetail requestItemDetail = RequestItemDetail.fromDocumentSnapshot(ds);
-
-  //   RequestItem requestItem;
-  //   if(request != null) {
-  //     requestItem = request;
-  //   } else {
-  //     RequestRepository requestRepository = RequestRepository();
-  //     requestItem = await requestRepository.getRequestItem(uid: ds.data['request_id']);
-  //   }
-
-  //   Item item;
-  //   if(i != null) {
-  //     item = i;
-  //   } else {
-  //     ItemRepository itemRepository = ItemRepository();
-  //     item = await itemRepository.getItem(uid: ds.data['item_id']);
-  //   }
-    
-
-  //   requestItemDetail.requestItem = requestItem;
-  //   requestItemDetail.item = item;
-
-  //   return requestItemDetail; 
-  // }
-
-  // Future<List<RequestItemDetail>> getRequestDetailByRequestId(
-  //   RequestItem request
-  // ) async {
-  //   QuerySnapshot qs = await stationCollection
-  //       .where('request_id', isEqualTo: request.id)
-  //       .getDocuments(); 
-
-  //   List<RequestItemDetail> requestItemDetails = qs.documents.map((ds) => RequestItemDetail.fromDocumentSnapshot(ds)).toList();
-
-  //   return requestItemDetails;
-  // }
 
   Future<void> createRequestDetail({
     @required RequestItem requestItem,
@@ -88,10 +54,16 @@ class RequestDetailRepository {
   Future<void> updateRequestDetail({
     @required RequestItemDetail requestItemDetail
   }) async {
-    await requestItemCollection.document(requestItemDetail.id).updateData(requestItemDetail.toDocument());
+    await requestItemCollection
+        .document(requestItemDetail.id)
+        .updateData(requestItemDetail.toDocument());
   }
 
-  Future<void> deleteRequestDetail(RequestItemDetail station) async {
-    return requestItemCollection.document(station.id).delete();
+  Future<void> deleteRequestDetail(RequestItemDetail requestItemDetail) async {
+    // return requestItemCollection.document(station.id).delete();
+    requestItemDetail.deleted = true;
+    await requestItemCollection
+        .document(requestItemDetail.id)
+        .updateData(requestItemDetail.toDocument());
   }
 }

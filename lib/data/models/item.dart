@@ -7,12 +7,16 @@ class Item extends Equatable{
   String name;
   Category category;
   Unit unit;
+  int stock;
+  bool deleted;
 
   Item({
     this.id,
     this.name,
     this.category,
     this.unit,
+    this.stock = 0,
+    this.deleted = false,
   });
 
   factory Item.fromMap(Map<String, dynamic> map) {
@@ -21,6 +25,8 @@ class Item extends Equatable{
       name: map['name'],
       category: map['category'],
       unit: map['unit'],
+      stock: map['stock'],
+      deleted: map['deleted']
     );
   }
 
@@ -28,6 +34,8 @@ class Item extends Equatable{
     return Item(
       id: ds.documentID,
       name: ds.data['name'],
+      stock: ds.data['stock'],
+      deleted: ds.data['deleted']
     );
   }
 
@@ -37,6 +45,8 @@ class Item extends Equatable{
       'name': this.name,
       'category': this.category.toMap(),
       'unit': this.unit.toMap(),
+      'stock': this.stock,
+      'deleted': this.deleted,
     };
   }
 
@@ -44,7 +54,9 @@ class Item extends Equatable{
     return {
       'name': this.name,
       'category_id': this.category.id,
-      'unit_id': this.unit.id
+      'unit_id': this.unit.id,
+      'stock': this.stock,
+      'deleted': this.deleted
     };
   }
 

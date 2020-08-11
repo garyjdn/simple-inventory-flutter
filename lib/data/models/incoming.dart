@@ -7,6 +7,7 @@ class Incoming {
   DateTime date;
   Item item;
   Supplier supplier;
+  bool deleted;
 
   Incoming({
     this.id,
@@ -14,6 +15,7 @@ class Incoming {
     this.date,
     this.item,
     this.supplier,
+    this.deleted = false,
   });
 
   factory Incoming.fromMap(Map<String, dynamic> map) {
@@ -23,6 +25,7 @@ class Incoming {
       date: map['date'] is Timestamp? map['date'].toDate() : map['date'] as DateTime,
       item: map['item'],
       supplier: map['supplier'],
+      deleted: map['deleted'],
     );
   }
 
@@ -33,6 +36,7 @@ class Incoming {
       'date': this.date,
       'item': this.item.toMap(),
       'supplier': this.supplier.toMap(),
+      'deleted': this.deleted,
     };
   }
 
@@ -42,6 +46,7 @@ class Incoming {
       'date': this.date,
       'item_id': this.item.id,
       'supplier_id': this.supplier.id,
+      'deleted': this.deleted
     };
   }
 }

@@ -6,16 +6,18 @@ import 'package:inventoryapp/data/data.dart';
 class UserRepository {
   final userCollection = Firestore.instance.collection('users');
 
-  Future<List<User>> getAllData() async {
+  Future<List<User>> getAllData([includeDeleted = false]) async {
     List<User> users = [];
-    await userCollection
-        .getDocuments()
-        .then((QuerySnapshot querySnapshot) {
-          querySnapshot.documents.forEach((ds) {
-            users.add(User.fromDocumentSnapshot(ds));
-          });
-        });
-
+    QuerySnapshot snapshot;
+    if(!includeDeleted) {
+      snapshot = await userCollection.where('deleted', isEqualTo: false).getDocuments();
+    } else {
+      snapshot = await userCollection.getDocuments();
+    }
+    snapshot.documents.forEach((ds) {
+      users.add(User.fromDocumentSnapshot(ds));
+    });
+    
     return users;
   }
 
@@ -47,11 +49,17 @@ class UserRepository {
 
   Future<void> updateUser({
     @required User user
-  }) async {
-    await userCollection.document(user.id).updateData(user.toDocument());
+}) async {
+    await userCollection
+        .document(user.id)
+        .updateData(user.toDocument());
   }
 
   Future<void> deleteUser(User user) async {
-    return userCollection.document(user.id).delete();
+    // return userCollection.document(user.id).delete();
+    user.deleted = true;
+    await userCollection
+        .document(user.id)
+        .updateData(user.toDocument());
   }
 }

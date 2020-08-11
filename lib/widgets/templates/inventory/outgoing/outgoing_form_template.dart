@@ -101,6 +101,15 @@ class _TmpOutgoingFormState extends State<TmpOutgoingForm> {
                 child: CircularProgressIndicator(),
               );
             } else if(state is OutgoingFormLoadSuccess) {
+              if(!state.items.contains(_selectedItem)) {
+                _selectedItem = state.items[0];
+              }
+              if(!state.stations.contains(_selectedStation)) {
+                _selectedStation = state.stations[0];
+              }
+              if(!state.users.contains(_selectedUser)) {
+                _selectedUser = state.users[0];
+              }
               return Container(
                 height: deviceSize.height,
                 child: Form(

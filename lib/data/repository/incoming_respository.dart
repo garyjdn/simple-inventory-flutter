@@ -4,15 +4,24 @@ import 'package:inventoryapp/data/data.dart';
 
 class IncomingRepository {
   final incomingCollection = Firestore.instance.collection('incomings');
-  Future<List<Incoming>> getAllData() async {
+  Future<List<Incoming>> getAllData([includeDeleted = false]) async {
     List<Incoming> incomings = [];
-    SupplierRepository categoryRepository = SupplierRepository();
+    QuerySnapshot querySnapshot;
+    if(!includeDeleted) {
+      querySnapshot = await incomingCollection.where('deleted', isEqualTo: false).getDocuments();
+    } else {
+      querySnapshot = await incomingCollection.getDocuments();
+    }
+
+    SupplierRepository supplierRepository = SupplierRepository();
+    List<Supplier> suppliers = await supplierRepository.getAllData(true);
+
     ItemRepository itemRepository = ItemRepository();
-    QuerySnapshot querySnapshot = await incomingCollection.getDocuments();
+    List<Item> items = await itemRepository.getAllData(true);
 
     await Future.forEach(querySnapshot.documents, (DocumentSnapshot ds) async {
-      Supplier supplier = await categoryRepository.getSupplier(uid: ds.data['supplier_id']);
-      Item item = await itemRepository.getItem(uid: ds.data['item_id']);
+      Supplier supplier = suppliers.firstWhere((Supplier e) => e.id == ds.data['supplier_id']);
+      Item item = items.firstWhere((Item e) => e.id == ds.data['item_id']);
 
       incomings.add(Incoming.fromMap({
         'id': ds.documentID,
@@ -32,6 +41,7 @@ class IncomingRepository {
     SupplierRepository categoryRepository = SupplierRepository();
     ItemRepository itemRepository = ItemRepository();
     QuerySnapshot querySnapshot = await incomingCollection
+        .where('deleted', isEqualTo: false)
         .where('date', isGreaterThanOrEqualTo: startDate)
         .where('date', isLessThan: DateTime(endDate.year, endDate.month, endDate.day + 1))
         .orderBy('date')
@@ -73,10 +83,16 @@ class IncomingRepository {
   Future<void> updateIncoming({
     @required Incoming incoming
   }) async {
-    await incomingCollection.document(incoming.id).updateData(incoming.toDocument());
+    await incomingCollection
+        .document(incoming.id)
+        .updateData(incoming.toDocument());
   }
 
   Future<void> deleteIncoming(Incoming incoming) async {
-    return incomingCollection.document(incoming.id).delete();
+    // return incomingCollection.document(incoming.id).delete();
+    incoming.deleted = true;
+    await incomingCollection
+        .document(incoming.id)
+        .updateData(incoming.toDocument());
   }
 }

@@ -8,6 +8,7 @@ class Outgoing {
   Item item;
   Station station;
   User user;
+  bool deleted = false;
 
   Outgoing({
     this.id,
@@ -16,6 +17,7 @@ class Outgoing {
     this.item,
     this.station,
     this.user,
+    this.deleted,
   });
 
   factory Outgoing.fromMap(Map<String,dynamic> map) {
@@ -25,7 +27,8 @@ class Outgoing {
       date: map['date'] is Timestamp? map['date'].toDate() : map['date'] as DateTime,
       item: map['item'],
       station: map['station'],
-      user: map['user']
+      user: map['user'],
+      deleted: map['deleted'],
     );
   }
 
@@ -36,7 +39,8 @@ class Outgoing {
       'date': this.date,
       'item_id': this.item.toMap(),
       'station': this.station.toMap(),
-      'user': this.user.toMap()
+      'user': this.user.toMap(),
+      'deleted': this.deleted,
     };
   }
 
@@ -47,6 +51,7 @@ class Outgoing {
       'item_id': this.item.id,
       'station_id': this.station.id,
       'user_id': this.user.id,
+      'deleted': this.deleted,
     };
   }
 }

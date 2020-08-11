@@ -4,15 +4,17 @@ import 'package:inventoryapp/data/data.dart';
 
 class CategoryRepository {
   final categoryCollection = Firestore.instance.collection('categories');
-  Future<List<Category>> getAllData() async {
+  Future<List<Category>> getAllData([includeDeleted = false]) async {
     List<Category> categories = [];
-    await categoryCollection
-        .getDocuments()
-        .then((QuerySnapshot querySnapshot) {
-          querySnapshot.documents.forEach((ds) {
-            categories.add(Category.fromDocumentSnapshot(ds));
-          });
-        });
+    QuerySnapshot snapshot;
+    if(!includeDeleted) {
+      snapshot = await categoryCollection.where('deleted', isEqualTo: false).getDocuments();
+    } else {
+      snapshot = await categoryCollection.getDocuments();
+    }
+    snapshot.documents.forEach((ds) {
+      categories.add(Category.fromDocumentSnapshot(ds));
+    });
 
     return categories;
   }
@@ -36,10 +38,16 @@ class CategoryRepository {
   Future<void> updateCategory({
     @required Category category
   }) async {
-    await categoryCollection.document(category.id).updateData(category.toDocument());
+    await categoryCollection
+        .document(category.id)
+        .updateData(category.toDocument());
   }
 
   Future<void> deleteCategory(Category category) async {
-    return categoryCollection.document(category.id).delete();
+    // return categoryCollection.document(category.id).delete();
+    category.deleted = true;
+    await categoryCollection
+        .document(category.id)
+        .updateData(category.toDocument());
   }
 }

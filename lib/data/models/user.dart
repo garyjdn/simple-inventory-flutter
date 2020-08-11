@@ -7,6 +7,7 @@ class User extends Equatable {
   String image;
   String email;
   String role;
+  bool deleted;
 
   User({
     this.id,
@@ -14,6 +15,7 @@ class User extends Equatable {
     this.image,
     this.email,
     this.role,
+    this.deleted = false,
   });
 
   factory User.fromMap(Map<String, dynamic> map) {
@@ -22,7 +24,8 @@ class User extends Equatable {
       name: map['name'],
       image: map['image'],
       email: map['email'],
-      role: map['role']
+      role: map['role'],
+      deleted: map['deleted'],
     );
   }
 
@@ -33,6 +36,7 @@ class User extends Equatable {
       image: ds.data['image'],
       email: ds.data['email'],
       role: ds.data['role'],
+      deleted: ds.data['deleted'],
     );
   }
 

@@ -14,6 +14,7 @@ class RequestItem {
   User requestUser;
   User reviewUser;
   RequestStatus requestStatus;
+  bool deleted;
 
   RequestItem({
     this.id,
@@ -21,7 +22,8 @@ class RequestItem {
     this.date,
     this.requestUser,
     this.reviewUser,
-    String status
+    String status,
+    this.deleted = false,
   }) {
     assert(status != null);
     this.requestStatus = stringStatusToEnum(status);
@@ -34,7 +36,8 @@ class RequestItem {
       date: map['date'] is Timestamp? map['date'].toDate() : map['date'] as DateTime ,
       requestUser: map['request_user'],
       reviewUser: map['review_user'],
-      status: map['status']
+      status: map['status'],
+      deleted: map['deleted']
     );
   }
 
@@ -42,7 +45,8 @@ class RequestItem {
     return RequestItem(
       id: ds.documentID,
       date: ds.data['date'] is Timestamp? ds.data['date'].toDate() : ds.data['date'] as DateTime,
-      status: ds.data['status']
+      status: ds.data['status'],
+      deleted: ds.data['deleted']
     );
   }
 
@@ -53,7 +57,8 @@ class RequestItem {
       'date': this.date,
       'request_user': this.requestUser.toMap(),
       'review_user': this.reviewUser.toMap(),
-      'status': this.requestStatus is String? this.requestStatus : requestStatusToString(this.requestStatus)
+      'status': this.requestStatus is String? this.requestStatus : requestStatusToString(this.requestStatus),
+      'deleted': this.deleted,
     };
   }
 
@@ -93,7 +98,8 @@ class RequestItem {
       'station_id': this.station.id,
       'request_user': this.requestUser.id,
       'review_user': this.reviewUser?.id,
-      'status': this.requestStatus is String? this.requestStatus : requestStatusToString(this.requestStatus)
+      'status': this.requestStatus is String? this.requestStatus : requestStatusToString(this.requestStatus),
+      'deleted': this.deleted
     };
   }
 

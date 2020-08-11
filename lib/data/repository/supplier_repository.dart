@@ -4,16 +4,17 @@ import 'package:inventoryapp/data/data.dart';
 
 class SupplierRepository {
   final supplierCollection = Firestore.instance.collection('suppliers');
-  Future<List<Supplier>> getAllData() async {
+  Future<List<Supplier>> getAllData([includeDeleted = false]) async {
     List<Supplier> suppliers = [];
-    await supplierCollection
-        .getDocuments()
-        .then((QuerySnapshot querySnapshot) {
-          querySnapshot.documents.forEach((ds) {
-            suppliers.add(Supplier.fromDocumentSnapshot(ds));
-          });
-        });
-
+    QuerySnapshot snapshot;
+    if(!includeDeleted) {
+      snapshot = await supplierCollection.where('deleted', isEqualTo: false).getDocuments();
+    } else {
+      snapshot = await supplierCollection.getDocuments();
+    }
+    snapshot.documents.forEach((ds) {
+      suppliers.add(Supplier.fromDocumentSnapshot(ds));
+    });
     return suppliers;
   }
 
@@ -46,10 +47,16 @@ class SupplierRepository {
   Future<void> updateSupplier({
     @required Supplier supplier
   }) async {
-    await supplierCollection.document(supplier.id).updateData(supplier.toDocument());
+    await supplierCollection
+        .document(supplier.id)
+        .updateData(supplier.toDocument());
   }
 
   Future<void> deleteSupplier(Supplier supplier) async {
-    return supplierCollection.document(supplier.id).delete();
+    // return supplierCollection.document(supplier.id).delete();
+    supplier.deleted = true;
+    await supplierCollection
+        .document(supplier.id)
+        .updateData(supplier.toDocument());
   }
 }

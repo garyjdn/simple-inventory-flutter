@@ -4,16 +4,19 @@ import 'package:equatable/equatable.dart';
 class Station extends Equatable {
   String id;
   String name;
+  bool deleted;
 
   Station({
     this.id,
     this.name,
+    this.deleted = false,
   });
 
   factory Station.fromMap(Map<String, dynamic> map) {
     return Station(
       id: map['id'],
       name: map['name'],
+      deleted: map['deleted']
     );
   }
 
@@ -21,6 +24,7 @@ class Station extends Equatable {
     return Station(
       id: ds.documentID,
       name: ds.data['name'],
+      deleted: ds.data['deleted']
     );
   }
 
@@ -28,12 +32,14 @@ class Station extends Equatable {
     return {
       'id': this.id,
       'name': this.name,
+      'deleted': this.deleted
     };
   }
 
   Map<String, dynamic> toDocument() {
     return {
       'name': this.name,
+      'deleted': this.deleted
     };
   }
 

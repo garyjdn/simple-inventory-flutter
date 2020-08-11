@@ -95,6 +95,12 @@ class _TmpItemFormState extends State<TmpItemForm> {
                 child: CircularProgressIndicator(),
               );
             } else if(state is ItemFormLoadSuccess) {
+              if(!state.categories.contains(_selectedCategory)) {
+                _selectedCategory = state.categories[0];
+              }
+              if(!state.units.contains(_selectedUnit)) {
+                _selectedUnit = state.units[0];
+              }
               return Container(
                 height: deviceSize.height,
                 child: Form(

@@ -4,16 +4,27 @@ import 'package:inventoryapp/data/data.dart';
 
 class RequestRepository {
   final requestCollection = Firestore.instance.collection('requests');
-  Future<List<RequestItem>> getAllData() async {
+  Future<List<RequestItem>> getAllData([includeDeleted = false]) async {
     List<RequestItem> requests = [];
 
+    QuerySnapshot querySnapshot;
     UserRepository userRepository = UserRepository();
     StationRepository stationRepository = StationRepository();
-    QuerySnapshot querySnapshot = await requestCollection.getDocuments();
+    if(!includeDeleted) {
+      querySnapshot = await requestCollection
+        .where('deleted', isEqualTo: false)
+        .getDocuments();
+    } else {
+      querySnapshot = await requestCollection
+        .getDocuments();
+    }
+
+    List<User> users = await userRepository.getAllData(true);
+    List<Station> stations = await stationRepository.getAllData(true);
 
     await Future.forEach(querySnapshot.documents, (DocumentSnapshot ds) async {
-      User requestUser = await userRepository.getUser(uid: ds.data['request_user']);
-      Station station = await stationRepository.getStation(uid: ds.data['station_id']);
+      User requestUser = users.firstWhere((User e) => e.id == ds.data['request_user']);
+      Station station = stations.firstWhere((Station e) => e.id == ds.data['station_id']);
 
       requests.add(RequestItem.fromMap({
         'id': ds.documentID,
@@ -60,10 +71,16 @@ class RequestRepository {
   Future<void> updateRequestItem({
     @required RequestItem request
   }) async {
-    await requestCollection.document(request.id).updateData(request.toDocument());
+    await requestCollection
+        .document(request.id)
+        .updateData(request.toDocument());
   }
 
   Future<void> deleteRequestItem(RequestItem request) async {
-    return requestCollection.document(request.id).delete();
+    // return requestCollection.document(request.id).delete();
+    request.deleted = true;
+    await requestCollection
+        .document(request.id)
+        .updateData(request.toDocument());
   }
 }

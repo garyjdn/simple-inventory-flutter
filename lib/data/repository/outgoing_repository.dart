@@ -4,12 +4,17 @@ import 'package:inventoryapp/data/data.dart';
 
 class OutgoingRepository {
   final outgoingCollection = Firestore.instance.collection('outgoings');
-  Future<List<Outgoing>> getAllData() async {
+  Future<List<Outgoing>> getAllData([includeDeleted = false]) async {
     List<Outgoing> outgoings = [];
     UserRepository categoryRepository = UserRepository();
     ItemRepository itemRepository = ItemRepository();
     StationRepository stationRepository = StationRepository();
-    QuerySnapshot querySnapshot = await outgoingCollection.getDocuments();
+    QuerySnapshot querySnapshot;
+    if(!includeDeleted) {
+      querySnapshot = await outgoingCollection.where('deleted', isEqualTo: false).getDocuments();
+    } else {
+      querySnapshot = await outgoingCollection.getDocuments();
+    }
 
     await Future.forEach(querySnapshot.documents, (DocumentSnapshot ds) async {
       User user = await categoryRepository.getUser(uid: ds.data['user_id']);
@@ -32,19 +37,26 @@ class OutgoingRepository {
 
   Future<List<Outgoing>> getAllDataFilteredByDate(DateTime startDate, DateTime endDate) async {
     List<Outgoing> outgoings = [];
-    UserRepository categoryRepository = UserRepository();
-    ItemRepository itemRepository = ItemRepository();
-    StationRepository stationRepository = StationRepository();
     QuerySnapshot querySnapshot = await outgoingCollection
+        .where('deleted', isEqualTo: false)
         .where('date', isGreaterThanOrEqualTo: startDate)
         .where('date', isLessThan: DateTime(endDate.year, endDate.month, endDate.day + 1))
         .orderBy('date')
         .getDocuments();
 
+    UserRepository userRepository = UserRepository();
+    List<User> users = await userRepository.getAllData(true);
+
+    ItemRepository itemRepository = ItemRepository();
+    List<Item> items = await itemRepository.getAllData(true);
+
+    StationRepository stationRepository = StationRepository();
+    List<Station> stations = await stationRepository.getAllData(true);
+
     await Future.forEach(querySnapshot.documents, (DocumentSnapshot ds) async {
-      User user = await categoryRepository.getUser(uid: ds.data['user_id']);
-      Item item = await itemRepository.getItem(uid: ds.data['item_id']);
-      Station station = await stationRepository.getStation(uid: ds.data['station_id']);
+      User user = users.firstWhere((User e) => e.id == ds.data['user_id']);
+      Item item = items.firstWhere((Item e) => e.id == ds.data['item_id']);
+      Station station = stations.firstWhere((Station e) => e.id == ds.data['station_id']);
 
       outgoings.add(Outgoing.fromMap({
         'id': ds.documentID,
@@ -81,10 +93,16 @@ class OutgoingRepository {
   Future<void> updateOutgoing({
     @required Outgoing outgoing
   }) async {
-    await outgoingCollection.document(outgoing.id).updateData(outgoing.toDocument());
+    await outgoingCollection
+        .document(outgoing.id)
+        .updateData(outgoing.toDocument());
   }
 
   Future<void> deleteOutgoing(Outgoing outgoing) async {
-    return outgoingCollection.document(outgoing.id).delete();
+    // return outgoingCollection.document(outgoing.id).delete();
+    outgoing.deleted = true;
+    await outgoingCollection
+        .document(outgoing.id)
+        .updateData(outgoing.toDocument());
   }
 }

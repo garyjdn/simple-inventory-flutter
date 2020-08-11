@@ -5,16 +5,19 @@ import 'package:inventoryapp/data/data.dart';
 class Unit extends Equatable{
   String id;
   String name;
+  bool deleted;
 
   Unit({
     this.id,
     this.name,
+    this.deleted = false,
   });
 
   factory Unit.fromMap(Map<String, dynamic> map) {
     return Unit(
       id: map['id'],
       name: map['name'],
+      deleted: map['deleted'],
     );
   }
 
@@ -22,19 +25,22 @@ class Unit extends Equatable{
     return Unit(
       id: ds.documentID,
       name: ds.data['name'],
+      deleted: ds.data['deleted'],
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
       'id': this.id,
-      'name': this.name
+      'name': this.name,
+      'deleted': this.deleted,
     };
   }
 
   Map<String, dynamic> toDocument() {
     return {
       'name': this.name,
+      'deleted': this.deleted,
     };
   }
 

@@ -6,12 +6,14 @@ class RequestItemDetail {
   Item item;
   RequestItem requestItem;
   int amount;
+  bool deleted;
 
   RequestItemDetail({
     this.id,
     this.item,
     this.requestItem,
-    this.amount
+    this.amount,
+    this.deleted = false,
   }):
     assert(item != null),
     assert(requestItem != null);
@@ -21,7 +23,8 @@ class RequestItemDetail {
       id: map['id'],
       requestItem: map['request_item'],
       item: map['item'],
-      amount: map['amount']
+      amount: map['amount'],
+      deleted: map['deleted']
     );
   }
 

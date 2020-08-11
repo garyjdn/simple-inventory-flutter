@@ -99,6 +99,12 @@ class _TmpIncomingFormState extends State<TmpIncomingForm> {
                 child: CircularProgressIndicator(),
               );
             } else if(state is IncomingFormLoadSuccess) {
+              if(!state.suppliers.contains(_selectedSupplier)) {
+                _selectedSupplier = state.suppliers[0];
+              }
+              if(!state.items.contains(_selectedItem)) {
+                _selectedItem = state.items[0];
+              }
               return Container(
                 height: deviceSize.height,
                 child: Form(

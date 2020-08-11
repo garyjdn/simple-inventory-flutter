@@ -41,7 +41,11 @@ class _RequestItemModalState extends State<RequestItemModal> {
     _selectedItem = widget.items[0];
 
     if(widget.action == 'Edit') {
-      _selectedItem = widget.requestItemDetail.item;
+      if(widget.items.contains(widget.requestItemDetail.item)) {
+        _selectedItem = widget.requestItemDetail.item;
+      } else {
+        _selectedItem = widget.items[0];
+      }
       _amountCtrl.text = widget.requestItemDetail.amount.toString();
     }
   }
