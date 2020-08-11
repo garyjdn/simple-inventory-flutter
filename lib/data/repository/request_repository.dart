@@ -31,7 +31,8 @@ class RequestRepository {
         'date': ds.data['date'],
         'request_user': requestUser,
         'station': station,
-        'status': ds.data['status']
+        'status': ds.data['status'],
+        'deleted': ds.data['deleted'],
       }));
     });
 

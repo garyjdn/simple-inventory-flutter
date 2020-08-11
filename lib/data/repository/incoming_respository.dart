@@ -28,7 +28,8 @@ class IncomingRepository {
         'amount': ds.data['amount'],
         'date': ds.data['date'],
         'supplier': supplier,
-        'item': item
+        'item': item,
+        'deleted': ds.data['deleted'],
       }));
     });
 
@@ -56,7 +57,8 @@ class IncomingRepository {
         'amount': ds.data['amount'],
         'date': ds.data['date'],
         'supplier': supplier,
-        'item': item
+        'item': item,
+        'deleted': ds.data['deleted'],
       }));
     });
 

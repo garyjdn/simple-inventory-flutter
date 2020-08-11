@@ -31,7 +31,8 @@ class RequestDetailRepository {
         'id': ds.documentID,
         'item': item,
         'request_item': requestItem,
-        'amount': ds.data['amount']
+        'amount': ds.data['amount'],
+        'deleted': ds.data['deleted'],
       }));
     });
 

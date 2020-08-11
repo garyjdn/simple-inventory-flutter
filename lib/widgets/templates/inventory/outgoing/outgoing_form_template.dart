@@ -225,6 +225,14 @@ class _TmpOutgoingFormState extends State<TmpOutgoingForm> {
                                   return null;
                                 },
                               ),
+                              SizedBox(height: 5),
+                              Container(
+                                width: double.infinity,
+                                child: Text(
+                                  'Available stock: ${_selectedItem.stock.toString()}',
+                                  textAlign: TextAlign.left,
+                                ),
+                              ),
                               SizedBox(height: 20),
                               DropdownButtonFormField<Station>(
                                 value: _selectedStation ?? state.stations[0],
@@ -235,7 +243,7 @@ class _TmpOutgoingFormState extends State<TmpOutgoingForm> {
                                   );
                                 }).toList(),
                                 decoration: InputDecoration(
-                                  labelText: 'Item',
+                                  labelText: 'Station',
                                   filled: true,
                                   fillColor: Colors.white,
                                   enabledBorder: OutlineInputBorder(
@@ -280,9 +288,12 @@ class _TmpOutgoingFormState extends State<TmpOutgoingForm> {
                                     ),
                                   ),
                                 ),
-                                validator: (value) {
+                                validator: (String value) {
                                   if (value.isEmpty) {
                                     return 'This field is required';
+                                  }
+                                  if (int.parse(value) > _selectedItem.stock) {
+                                    return 'Insufficient stock';
                                   }
                                   return null;
                                 },

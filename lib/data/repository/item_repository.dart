@@ -23,7 +23,9 @@ class ItemRepository {
         'id': ds.documentID,
         'name': ds.data['name'],
         'category': category,
-        'unit': unit
+        'unit': unit,
+        'stock': ds.data['stock'],
+        'deleted': ds.data['deleted'],
       }));
     });
 

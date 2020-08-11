@@ -286,12 +286,15 @@ class _TmpIncomingFormState extends State<TmpIncomingForm> {
                                         item: _selectedItem?? state.items[0]));
                                     } else if(widget.action == 'edit') {
                                       assert(widget.incoming != null);
+                                      int oldIncomingAmount = widget.incoming.amount;
                                       Incoming incoming = widget.incoming
                                         ..date = _selectedDate
                                         ..amount = int.parse(_amountCtrl.text)
                                         ..supplier = _selectedSupplier
                                         ..item = _selectedItem;
-                                      _incomingFormBloc.add(EditIncomingButtonPressed(incoming: incoming));
+                                      _incomingFormBloc.add(EditIncomingButtonPressed(
+                                        incoming: incoming, 
+                                        oldAmount: oldIncomingAmount));
                                     }
                                   }
                                 },

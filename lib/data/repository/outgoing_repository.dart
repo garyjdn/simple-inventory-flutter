@@ -27,7 +27,8 @@ class OutgoingRepository {
         'date': ds.data['date'],
         'user': user,
         'item': item,
-        'station': station 
+        'station': station,
+        'deleted': ds.data['deleted'],
       }));
     });
 
@@ -64,7 +65,8 @@ class OutgoingRepository {
         'date': ds.data['date'],
         'user': user,
         'item': item,
-        'station': station 
+        'station': station,
+        'deleted': ds.data['deleted'],
       }));
     });
 

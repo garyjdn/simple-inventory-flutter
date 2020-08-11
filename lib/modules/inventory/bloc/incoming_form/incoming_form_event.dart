@@ -31,9 +31,11 @@ class AddIncomingButtonPressed extends IncomingFormEvent {
 
 class EditIncomingButtonPressed extends IncomingFormEvent {
   final Incoming incoming;
+  final int oldAmount;
 
   EditIncomingButtonPressed({
     @required this.incoming,
+    this.oldAmount,
   }):
     assert(incoming != null);
 
