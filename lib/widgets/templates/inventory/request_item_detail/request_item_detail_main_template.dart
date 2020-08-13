@@ -95,7 +95,7 @@ class TmpRequestItemDetailMain extends StatelessWidget {
                     requestItem.requestStatus == RequestStatus.WAITING &&
                     authState.user.role == 'Staff') {
                   return FloatingActionButton(
-                    backgroundColor: Colors.blue[300],
+                    backgroundColor: Colors.blueAccent[700],
                     child: Icon(Icons.add),
                     onPressed: () {
                       showForm(context, 'Add', state.items, requestItem,
