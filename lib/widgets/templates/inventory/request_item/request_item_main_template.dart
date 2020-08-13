@@ -106,7 +106,15 @@ class TmpRequestItemMain extends StatelessWidget {
             body: BlocConsumer<RequestItemBloc, RequestItemState>(
               listener: (context, state) async {
                 if(state is RequestItemSubmitSuccess) {
-                  Navigator.of(context).pushNamed(RequestItemDetailMainScreen.routeName, arguments: state.requestItem);
+                  await customDialog.showDialog(
+                    context: context,
+                    builder: (_) => MessageDialog(
+                      message: state.message
+                    )
+                  );
+                  await Navigator.of(context).pushNamed(RequestItemDetailMainScreen.routeName, arguments: state.requestItem);
+                  _requestItemBloc.add(LoadRequestItemStarted(user: authState.user));
+                  
                   // await customDialog.showDialog(
                   //   context: context,
                   //   builder: (_) => MessageDialog(

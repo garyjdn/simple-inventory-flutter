@@ -61,8 +61,9 @@ class RequestItemSubmitInProgress extends RequestItemState {
 
 class RequestItemSubmitSuccess extends RequestItemState {
   final RequestItem requestItem;
+  final String message;
 
-  RequestItemSubmitSuccess({this.requestItem});
+  RequestItemSubmitSuccess({this.requestItem, this.message});
 
   @override
   List<Object> get props => [];

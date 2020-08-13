@@ -53,7 +53,7 @@ class _RequestModalState extends State<RequestModal> {
                 );
               }).toList(),
               decoration: InputDecoration(
-                labelText: 'Item',
+                labelText: 'Station',
                 filled: true,
                 fillColor: Colors.white,
                 enabledBorder: OutlineInputBorder(

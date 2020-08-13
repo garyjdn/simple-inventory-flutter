@@ -40,6 +40,7 @@ class RequestItemDetail {
       'amount': this.amount,
       'item_id': this.item.id,
       'request_id': this.requestItem.id,
+      'deleted': this.deleted,
     };
   }
 

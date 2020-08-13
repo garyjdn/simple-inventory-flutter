@@ -61,7 +61,7 @@ class RequestItemBloc extends Bloc<RequestItemEvent, RequestItemState> {
       station: event.station,
       user: event.user,
     );
-    yield RequestItemSubmitSuccess(requestItem: requestItem);
+    yield RequestItemSubmitSuccess(requestItem: requestItem, message: 'Request Created');
   }
 
   // Stream<RequestItemState> _editRequestItem(EditRequestItemButtonPressed event) async* {
