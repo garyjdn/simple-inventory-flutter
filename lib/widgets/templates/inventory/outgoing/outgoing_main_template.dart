@@ -92,7 +92,7 @@ class TmpOutgoingMain extends StatelessWidget {
           } else if(state is OutgoingLoadSuccess) {
 
             return ListView(
-              padding: EdgeInsets.all(15.0),
+              padding: EdgeInsets.fromLTRB(15.0, 15, 15, 55),
               children: state.outgoings.map((outgoing) => 
                 Card(
                   elevation: 0,

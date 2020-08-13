@@ -90,7 +90,7 @@ class TmpItemMain extends StatelessWidget {
             );
           } else if(state is ItemLoadSuccess) {
             return ListView(
-              padding: EdgeInsets.all(15.0),
+              padding: EdgeInsets.fromLTRB(15.0, 15, 15, 55),
               children: state.items.map((item) => Card(
                 elevation: 0,
                 child: ListTile(
@@ -101,6 +101,9 @@ class TmpItemMain extends StatelessWidget {
                   title: Text(
                     item.name,
                     style: Theme.of(context).textTheme.bodyText2
+                  ),
+                  subtitle: Text(
+                    'Stock: ${item.stock}'
                   ),
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
@@ -131,7 +134,7 @@ class TmpItemMain extends StatelessWidget {
                     ],
                   ),
                 ),
-              )).toList()
+              )).toList(),
             );
           } else {
             return Container();

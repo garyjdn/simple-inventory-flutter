@@ -121,7 +121,7 @@ class TmpRequestItemMain extends StatelessWidget {
                       message: state.message
                     )
                   );
-                  _requestItemBloc.add(LoadRequestItemStarted());
+                  _requestItemBloc.add(LoadRequestItemStarted(user: authState.user));
                 }
               },
               buildWhen: (prevState, state) {
@@ -138,12 +138,12 @@ class TmpRequestItemMain extends StatelessWidget {
                   );
                 } else if(state is RequestItemLoadSuccess) {
                   return ListView(
-                    padding: EdgeInsets.all(15.0),
+                    padding: EdgeInsets.fromLTRB(15.0, 15, 15, 55),
                     children: state.requestItems.map((requestItem) => InkWell(
                       onTap: () async {
                         final fetch = await Navigator.of(context).pushNamed(RequestItemDetailMainScreen.routeName, arguments: requestItem);
                         if(fetch != null && fetch) {
-                          _requestItemBloc.add(LoadRequestItemStarted());
+                          _requestItemBloc.add(LoadRequestItemStarted(user: authState.user));
                         }
                       },
                       child: Card(

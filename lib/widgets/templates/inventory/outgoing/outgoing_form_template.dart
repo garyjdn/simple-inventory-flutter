@@ -337,13 +337,16 @@ class _TmpOutgoingFormState extends State<TmpOutgoingForm> {
                                         item: _selectedItem?? state.items[0]));
                                     } else if(widget.action == 'edit') {
                                       assert(widget.outgoing != null);
+                                      int oldOutgoingAmount = widget.outgoing.amount;
                                       Outgoing outgoing = widget.outgoing
                                         ..date = _selectedDate
                                         ..amount = int.parse(_amountCtrl.text)
                                         ..user = _selectedUser
                                         ..station = _selectedStation
                                         ..item = _selectedItem;
-                                      _outgoingFormBloc.add(EditOutgoingButtonPressed(outgoing: outgoing));
+                                      _outgoingFormBloc.add(EditOutgoingButtonPressed(
+                                        outgoing: outgoing,
+                                        oldAmount: oldOutgoingAmount));
                                     }
                                   }
                                 },

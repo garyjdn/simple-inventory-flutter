@@ -34,9 +34,11 @@ class AddOutgoingButtonPressed extends OutgoingFormEvent {
 
 class EditOutgoingButtonPressed extends OutgoingFormEvent {
   final Outgoing outgoing;
+  final int oldAmount;
 
   EditOutgoingButtonPressed({
     @required this.outgoing,
+    this.oldAmount,
   }):
     assert(outgoing != null);
 

@@ -5,6 +5,11 @@ abstract class RequestItemEvent extends Equatable {
 }
 
 class LoadRequestItemStarted extends RequestItemEvent {
+  final User user;
+
+  LoadRequestItemStarted({@required this. user})
+    : assert(user != null);
+
   @override
   List<Object> get props => [];
   

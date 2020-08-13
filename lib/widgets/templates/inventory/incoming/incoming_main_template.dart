@@ -92,7 +92,7 @@ class TmpIncomingMain extends StatelessWidget {
           } else if(state is IncomingLoadSuccess) {
 
             return ListView(
-              padding: EdgeInsets.all(15.0),
+              padding: EdgeInsets.fromLTRB(15.0, 15, 15, 55),
               children: state.incomings.map((incoming) => 
                 Card(
                   elevation: 0,

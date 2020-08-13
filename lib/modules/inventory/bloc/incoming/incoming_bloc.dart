@@ -34,6 +34,12 @@ class IncomingBloc extends Bloc<IncomingEvent, IncomingState> {
     yield IncomingLoadStarted();
     IncomingRepository _incomingRepository = IncomingRepository();
     await _incomingRepository.deleteIncoming(event.incoming);
+
+    ItemRepository _itemRepository = ItemRepository();
+    Item item = event.incoming.item;
+    item.stock -= event.incoming.amount;
+    await _itemRepository.updateItem(item: item);
+
     yield IncomingDeleteSuccess(message: 'Incoming deleted');
   }
 }

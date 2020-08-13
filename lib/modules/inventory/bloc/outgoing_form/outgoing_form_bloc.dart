@@ -53,6 +53,12 @@ class OutgoingFormBloc extends Bloc<OutgoingFormEvent, OutgoingFormState> {
       station: event.station,
       amount: event.amount
     );
+
+    ItemRepository _itemRepository = ItemRepository();
+    Item item = event.item;
+    item.stock -= event.amount;
+    _itemRepository.updateItem(item: item);
+
     yield OutgoingFormSubmitSuccess(message: 'Outgoing Created');
   }
 
@@ -60,6 +66,12 @@ class OutgoingFormBloc extends Bloc<OutgoingFormEvent, OutgoingFormState> {
     yield OutgoingFormSubmitInProgress();
     OutgoingRepository _outgoingRepository = OutgoingRepository();
     await _outgoingRepository.updateOutgoing(outgoing: event.outgoing);
+
+    ItemRepository _itemRepository = ItemRepository();
+    Item item = event.outgoing.item;
+    item.stock -= (event.outgoing.amount - event.oldAmount);
+    await _itemRepository.updateItem(item: item);
+
     yield OutgoingFormSubmitSuccess(message: 'Outgoing Updated');
   }
 }

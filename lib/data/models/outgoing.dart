@@ -8,7 +8,7 @@ class Outgoing {
   Item item;
   Station station;
   User user;
-  bool deleted = false;
+  bool deleted;
 
   Outgoing({
     this.id,
@@ -17,7 +17,7 @@ class Outgoing {
     this.item,
     this.station,
     this.user,
-    this.deleted,
+    this.deleted = false,
   });
 
   factory Outgoing.fromMap(Map<String,dynamic> map) {

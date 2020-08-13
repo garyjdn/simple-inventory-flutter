@@ -4,7 +4,7 @@ import 'package:inventoryapp/data/data.dart';
 
 class RequestRepository {
   final requestCollection = Firestore.instance.collection('requests');
-  Future<List<RequestItem>> getAllData([includeDeleted = false]) async {
+  Future<List<RequestItem>> getAllData(User user, [includeDeleted = false]) async {
     List<RequestItem> requests = [];
 
     QuerySnapshot querySnapshot;
@@ -25,15 +25,16 @@ class RequestRepository {
     await Future.forEach(querySnapshot.documents, (DocumentSnapshot ds) async {
       User requestUser = users.firstWhere((User e) => e.id == ds.data['request_user']);
       Station station = stations.firstWhere((Station e) => e.id == ds.data['station_id']);
-
-      requests.add(RequestItem.fromMap({
-        'id': ds.documentID,
-        'date': ds.data['date'],
-        'request_user': requestUser,
-        'station': station,
-        'status': ds.data['status'],
-        'deleted': ds.data['deleted'],
-      }));
+      if(user.role != 'Staff' || (requestUser.role == 'Staff' && user.id == requestUser.id)) {
+        requests.add(RequestItem.fromMap({
+          'id': ds.documentID,
+          'date': ds.data['date'],
+          'request_user': requestUser,
+          'station': station,
+          'status': ds.data['status'],
+          'deleted': ds.data['deleted'],
+        }));
+      }
     });
 
     return requests;

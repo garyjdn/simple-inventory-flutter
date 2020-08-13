@@ -7,9 +7,17 @@ class RequestItemMainScreen extends StatelessWidget {
   static const routeName = '/request-item';
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<RequestItemBloc>(
-      create: (BuildContext context) => RequestItemBloc()..add(LoadRequestItemStarted()),
-      child: TmpRequestItemMain()
+    return BlocBuilder<AuthenticationBloc, AuthenticationState>(
+      builder: (context, authState) {
+        if(authState is AuthenticationSuccess) {
+          return BlocProvider<RequestItemBloc>(
+            create: (BuildContext context) => RequestItemBloc()..add(LoadRequestItemStarted(user: authState.user)),
+            child: TmpRequestItemMain()
+          );
+        } else {
+          return Container();
+        }
+      }
     );
   }
 }

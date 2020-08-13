@@ -34,6 +34,12 @@ class OutgoingBloc extends Bloc<OutgoingEvent, OutgoingState> {
     yield OutgoingLoadStarted();
     OutgoingRepository _outgoingRepository = OutgoingRepository();
     await _outgoingRepository.deleteOutgoing(event.outgoing);
+
+    ItemRepository _itemRepository = ItemRepository();
+    Item item = event.outgoing.item;
+    item.stock += event.outgoing.amount;
+    await _itemRepository.updateItem(item: item);
+
     yield OutgoingDeleteSuccess(message: 'Outgoing deleted');
   }
 }

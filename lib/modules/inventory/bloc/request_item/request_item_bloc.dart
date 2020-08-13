@@ -30,7 +30,7 @@ class RequestItemBloc extends Bloc<RequestItemEvent, RequestItemState> {
   Stream<RequestItemState> _loadRequestItemStarted(LoadRequestItemStarted event) async* {
     yield RequestItemLoadStarted();
     RequestRepository _requestItemRepository = RequestRepository();
-    List<RequestItem> requestItems = await _requestItemRepository.getAllData();
+    List<RequestItem> requestItems = await _requestItemRepository.getAllData(event.user);
     
     requestItems.map((request) async {
       UserRepository _userRepository = UserRepository();
