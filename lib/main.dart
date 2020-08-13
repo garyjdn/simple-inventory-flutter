@@ -8,9 +8,8 @@ import 'routes.dart';
 void main() async {
   runApp(MyApp());
 
-  Map<Permission, PermissionStatus> permissions = await [
-    Permission.storage
-  ].request();
+  Map<Permission, PermissionStatus> permissions =
+      await [Permission.storage].request();
 }
 
 class MyApp extends StatelessWidget {
@@ -19,14 +18,16 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-         BlocProvider<AppBloc>(
+        BlocProvider<AppBloc>(
           create: (BuildContext context) => AppBloc()..add(AppStarted()),
         ),
         BlocProvider<AuthenticationBloc>(
-          create: (BuildContext context) => AuthenticationBloc()..add(AuthStarted()),
+          create: (BuildContext context) =>
+              AuthenticationBloc()..add(AuthStarted()),
         ),
       ],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Inventory App',
         theme: AppTheme.lightTheme,
         home: AppScreen(),
