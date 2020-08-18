@@ -27,7 +27,7 @@ class _TmpReportState extends State<TmpReport> {
   String _selectedTransaction;
 
   _generatePDF(
-    String transaction, 
+    String transaction,
     DateTime startDate,
     DateTime endDate,
     User user,
@@ -35,55 +35,63 @@ class _TmpReportState extends State<TmpReport> {
     setState(() => _isLoading = true);
     List<Incoming> incomings;
     List<Outgoing> outgoings;
-    if(transaction == 'Incoming') {
+    if (transaction == 'Incoming') {
       IncomingRepository incomingRepository = IncomingRepository();
-      incomings = await incomingRepository.getAllDataFilteredByDate(startDate, endDate);
+      incomings =
+          await incomingRepository.getAllDataFilteredByDate(startDate, endDate);
     } else {
       OutgoingRepository outgoingRepository = OutgoingRepository();
-      outgoings = await outgoingRepository.getAllDataFilteredByDate(startDate, endDate);
+      outgoings =
+          await outgoingRepository.getAllDataFilteredByDate(startDate, endDate);
     }
 
     final output = await getTemporaryDirectory();
     var myTheme = pw.ThemeData.withFont(
-      base: pw.Font.ttf(await rootBundle.load("assets/fonts/roboto/Roboto-Regular.ttf")),
-      bold: pw.Font.ttf(await rootBundle.load("assets/fonts/roboto/Roboto-Bold.ttf")),
+      base: pw.Font.ttf(
+          await rootBundle.load("assets/fonts/roboto/Roboto-Regular.ttf")),
+      bold: pw.Font.ttf(
+          await rootBundle.load("assets/fonts/roboto/Roboto-Bold.ttf")),
     );
     final pdf = pw.Document(theme: myTheme);
     pdf.addPage(pw.MultiPage(
-      pageFormat: PdfPageFormat.a4,
-      build: (pw.Context context) => <pw.Widget>[
-        pw.Header(
-          level: 0,
-          child: pw.Row(
-            mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-            children: <pw.Widget>[
-              pw.Text('$transaction Report', textScaleFactor: 2),
-              pw.PdfLogo()
-            ])),
-        if(transaction == 'Incoming')
-        pw.Table.fromTextArray(context: context, data: <List<String>>[
-          <String>['Item', 'Supplier', 'Amount', 'Date'],
-          ...incomings.map((incoming) => <String>[
-              incoming.item.name,
-              incoming.supplier.name,
-              incoming.amount.toString(),
-              DateFormat('dd/MM/yyyy').format(incoming.date)
-            ]).toList(),
-        ]),
-
-        if(transaction == 'Outgoing')
-        pw.Table.fromTextArray(context: context, data: <List<String>>[
-          <String>['Item', 'PIC', 'Amount', 'Station', 'Date'],
-          ...outgoings.map((outgoing) => <String>[
-              outgoing.item.name,
-              outgoing.user.name,
-              outgoing.amount.toString(),
-              outgoing.station.name,
-              DateFormat('dd/MM/yyyy').format(outgoing.date)
-            ]).toList(),
-        ]),
-      ]));
-    Directory downloadsDirectory = await DownloadsPathProvider.downloadsDirectory;
+        pageFormat: PdfPageFormat.a4,
+        build: (pw.Context context) => <pw.Widget>[
+              pw.Header(
+                  level: 0,
+                  child: pw.Row(
+                      mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                      children: <pw.Widget>[
+                        pw.Text('$transaction Report', textScaleFactor: 2),
+                        pw.PdfLogo()
+                      ])),
+              if (transaction == 'Incoming')
+                pw.Table.fromTextArray(context: context, data: <List<String>>[
+                  <String>['Item', 'Supplier', 'Amount', 'Date'],
+                  ...incomings
+                      .map((incoming) => <String>[
+                            incoming.item.name,
+                            incoming.supplier.name,
+                            incoming.amount.toString(),
+                            DateFormat('dd/MM/yyyy').format(incoming.date)
+                          ])
+                      .toList(),
+                ]),
+              if (transaction == 'Outgoing')
+                pw.Table.fromTextArray(context: context, data: <List<String>>[
+                  <String>['Item', 'PIC', 'Amount', 'Station', 'Date'],
+                  ...outgoings
+                      .map((outgoing) => <String>[
+                            outgoing.item.name,
+                            outgoing.user.name,
+                            outgoing.amount.toString(),
+                            outgoing.station.name,
+                            DateFormat('dd/MM/yyyy').format(outgoing.date)
+                          ])
+                      .toList(),
+                ]),
+            ]));
+    Directory downloadsDirectory =
+        await DownloadsPathProvider.downloadsDirectory;
     String fileName = '$transaction.pdf';
     String path = "${downloadsDirectory.path}/$fileName";
     print(path);
@@ -100,7 +108,8 @@ class _TmpReportState extends State<TmpReport> {
     super.initState();
     _selectedTransaction = _transactions[0];
     _selectedEndDate = DateTime.now();
-    _selectedStartDate = DateTime(_selectedEndDate.year, _selectedEndDate.month, _selectedEndDate.day - 1);
+    _selectedStartDate = DateTime(_selectedEndDate.year, _selectedEndDate.month,
+        _selectedEndDate.day - 1);
   }
 
   @override
@@ -114,19 +123,19 @@ class _TmpReportState extends State<TmpReport> {
         }
       },
       child: Scaffold(
-        backgroundColor: Colors.blue[50],
-        appBar: AppBar(
-          backgroundColor: Colors.blue[300],
-          leading: IconButton(
-            onPressed: () => Navigator.of(context).pop(),
-            icon: Icon(Icons.arrow_back_ios),
+          backgroundColor: Colors.blue[50],
+          appBar: AppBar(
+            backgroundColor: Colors.blueAccent[700],
+            leading: IconButton(
+              onPressed: () => Navigator.of(context).pop(),
+              icon: Icon(Icons.arrow_back_ios),
+            ),
+            title: Text('Report'),
+            centerTitle: true,
           ),
-          title: Text('Report'),
-          centerTitle: true,
-        ),
-        body: BlocBuilder<AuthenticationBloc, AuthenticationState>(
-          builder: (context, authState) {
-            if(authState is AuthenticationSuccess) {
+          body: BlocBuilder<AuthenticationBloc, AuthenticationState>(
+              builder: (context, authState) {
+            if (authState is AuthenticationSuccess) {
               return Container(
                 padding: EdgeInsets.all(15),
                 child: Form(
@@ -139,23 +148,19 @@ class _TmpReportState extends State<TmpReport> {
                           Expanded(
                             child: DateTimeField(
                               decoration: InputDecoration(
-                                labelText: 'Date Start',
-                                filled: true,
-                                fillColor: Colors.white,
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Colors.blue[600],
-                                    width: 1
+                                  labelText: 'Date Start',
+                                  filled: true,
+                                  fillColor: Colors.white,
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.blue[600], width: 1),
                                   ),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Colors.blue[600],
-                                    width: 1
-                                  ),
-                                )
-                              ),
-                              initialValue: _selectedStartDate ?? DateTime.now(),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.blue[600], width: 1),
+                                  )),
+                              initialValue:
+                                  _selectedStartDate ?? DateTime.now(),
                               format: DateFormat("yyyy-MM-dd"),
                               onShowPicker: (context, currentValue) {
                                 return showDatePicker(
@@ -164,7 +169,8 @@ class _TmpReportState extends State<TmpReport> {
                                     initialDate: currentValue ?? DateTime.now(),
                                     lastDate: DateTime(2100));
                               },
-                              onChanged: (DateTime dt) => _selectedStartDate = dt,
+                              onChanged: (DateTime dt) =>
+                                  _selectedStartDate = dt,
                               validator: (value) {
                                 if (value == null) {
                                   return 'This field is required';
@@ -177,22 +183,17 @@ class _TmpReportState extends State<TmpReport> {
                           Expanded(
                             child: DateTimeField(
                               decoration: InputDecoration(
-                                labelText: 'Date End',
-                                filled: true,
-                                fillColor: Colors.white,
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Colors.blue[600],
-                                    width: 1
+                                  labelText: 'Date End',
+                                  filled: true,
+                                  fillColor: Colors.white,
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.blue[600], width: 1),
                                   ),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Colors.blue[600],
-                                    width: 1
-                                  ),
-                                )
-                              ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.blue[600], width: 1),
+                                  )),
                               initialValue: _selectedEndDate ?? DateTime.now(),
                               format: DateFormat("yyyy-MM-dd"),
                               onShowPicker: (context, currentValue) {
@@ -223,23 +224,19 @@ class _TmpReportState extends State<TmpReport> {
                           );
                         }).toList(),
                         decoration: InputDecoration(
-                          labelText: 'Transaction',
-                          filled: true,
-                          fillColor: Colors.white,
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Colors.blue[600],
-                              width: 1
+                            labelText: 'Transaction',
+                            filled: true,
+                            fillColor: Colors.white,
+                            enabledBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: Colors.blue[600], width: 1),
                             ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Colors.blue[600],
-                              width: 1
-                            ),
-                          )
-                        ),
-                        onChanged: (value) => setState(() => _selectedTransaction = value),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: Colors.blue[600], width: 1),
+                            )),
+                        onChanged: (value) =>
+                            setState(() => _selectedTransaction = value),
                         validator: (value) {
                           if (value == null) {
                             return 'This field is required';
@@ -251,34 +248,33 @@ class _TmpReportState extends State<TmpReport> {
                       Container(
                         width: double.infinity,
                         child: RaisedButton(
-                          elevation: 0,
-                          color: Colors.blue[300],
-                          onPressed: () {
-                            if (_formKey.currentState.validate()) {
-                              _generatePDF(_selectedTransaction, _selectedStartDate, _selectedEndDate, authState.user);
-                            }
-                          },
-                          child: _isLoading
-                          ? SizedBox(
-                              width: 21,
-                              height: 21,
-                              child: CircularProgressIndicator(
-                                strokeWidth: 3.0,
-                                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                              )
-                            )
-                          : Container(
-                              height: 40,
-                              child: Center(
-                                child: Text(
-                                  'Generate',
-                                  style: TextStyle(
-                                    color: Colors.white
-                                  )
-                                )
-                              ),
-                            )
-                        ),
+                            elevation: 0,
+                            color: Colors.blueAccent[700],
+                            onPressed: () {
+                              if (_formKey.currentState.validate()) {
+                                _generatePDF(
+                                    _selectedTransaction,
+                                    _selectedStartDate,
+                                    _selectedEndDate,
+                                    authState.user);
+                              }
+                            },
+                            child: _isLoading
+                                ? SizedBox(
+                                    width: 21,
+                                    height: 21,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 3.0,
+                                      valueColor: AlwaysStoppedAnimation<Color>(
+                                          Colors.white),
+                                    ))
+                                : Container(
+                                    height: 40,
+                                    child: Center(
+                                        child: Text('Generate',
+                                            style: TextStyle(
+                                                color: Colors.white))),
+                                  )),
                       )
                     ],
                   ),
@@ -287,10 +283,7 @@ class _TmpReportState extends State<TmpReport> {
             } else {
               return Container();
             }
-            
-          }
-        )
-      ),
+          })),
     );
   }
 }
