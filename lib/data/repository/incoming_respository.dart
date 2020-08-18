@@ -8,9 +8,14 @@ class IncomingRepository {
     List<Incoming> incomings = [];
     QuerySnapshot querySnapshot;
     if(!includeDeleted) {
-      querySnapshot = await incomingCollection.where('deleted', isEqualTo: false).getDocuments();
+      querySnapshot = await incomingCollection
+          .where('deleted', isEqualTo: false)
+          .orderBy('created_at', descending: true)
+          .getDocuments();
     } else {
-      querySnapshot = await incomingCollection.getDocuments();
+      querySnapshot = await incomingCollection
+          .orderBy('created_at', descending: true)
+          .getDocuments();
     }
 
     SupplierRepository supplierRepository = SupplierRepository();

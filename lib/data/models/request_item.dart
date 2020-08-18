@@ -15,6 +15,7 @@ class RequestItem {
   User reviewUser;
   RequestStatus requestStatus;
   bool deleted;
+  DateTime createdAt;
 
   RequestItem({
     this.id,
@@ -24,9 +25,11 @@ class RequestItem {
     this.reviewUser,
     String status,
     this.deleted = false,
+    createdAt
   }) {
     assert(status != null);
     this.requestStatus = stringStatusToEnum(status);
+    this.createdAt = createdAt ?? DateTime.now();
   }
 
   factory RequestItem.fromMap(Map<String, dynamic> map) {
@@ -37,7 +40,8 @@ class RequestItem {
       requestUser: map['request_user'],
       reviewUser: map['review_user'],
       status: map['status'],
-      deleted: map['deleted']
+      deleted: map['deleted'],
+      createdAt: map['created_at'],
     );
   }
 
@@ -46,7 +50,8 @@ class RequestItem {
       id: ds.documentID,
       date: ds.data['date'] is Timestamp? ds.data['date'].toDate() : ds.data['date'] as DateTime,
       status: ds.data['status'],
-      deleted: ds.data['deleted']
+      deleted: ds.data['deleted'],
+      createdAt: ds.data['created_at'],
     );
   }
 
@@ -59,6 +64,7 @@ class RequestItem {
       'review_user': this.reviewUser.toMap(),
       'status': this.requestStatus is String? this.requestStatus : requestStatusToString(this.requestStatus),
       'deleted': this.deleted,
+      'created_at': this.createdAt,
     };
   }
 
@@ -99,7 +105,8 @@ class RequestItem {
       'request_user': this.requestUser.id,
       'review_user': this.reviewUser?.id,
       'status': this.requestStatus is String? this.requestStatus : requestStatusToString(this.requestStatus),
-      'deleted': this.deleted
+      'deleted': this.deleted,
+      'created_at': this.createdAt
     };
   }
 

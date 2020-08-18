@@ -13,9 +13,11 @@ class RequestRepository {
     if(!includeDeleted) {
       querySnapshot = await requestCollection
         .where('deleted', isEqualTo: false)
+        .orderBy('date', descending: true)
         .getDocuments();
     } else {
       querySnapshot = await requestCollection
+        .orderBy('date', descending: true)
         .getDocuments();
     }
 

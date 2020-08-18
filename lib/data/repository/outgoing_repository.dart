@@ -11,9 +11,14 @@ class OutgoingRepository {
     StationRepository stationRepository = StationRepository();
     QuerySnapshot querySnapshot;
     if(!includeDeleted) {
-      querySnapshot = await outgoingCollection.where('deleted', isEqualTo: false).getDocuments();
+      querySnapshot = await outgoingCollection
+          .where('deleted', isEqualTo: false)
+          .orderBy('created_at', descending: true)
+          .getDocuments();
     } else {
-      querySnapshot = await outgoingCollection.getDocuments();
+      querySnapshot = await outgoingCollection
+          .orderBy('created_at', descending: true)
+          .getDocuments();
     }
 
     await Future.forEach(querySnapshot.documents, (DocumentSnapshot ds) async {

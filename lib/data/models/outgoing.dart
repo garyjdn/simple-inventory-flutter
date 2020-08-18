@@ -9,6 +9,7 @@ class Outgoing {
   Station station;
   User user;
   bool deleted;
+  DateTime createdAt;
 
   Outgoing({
     this.id,
@@ -18,7 +19,9 @@ class Outgoing {
     this.station,
     this.user,
     this.deleted = false,
-  });
+    createdAt
+  }):
+    createdAt = createdAt ?? DateTime.now();
 
   factory Outgoing.fromMap(Map<String,dynamic> map) {
     return Outgoing(
@@ -29,6 +32,7 @@ class Outgoing {
       station: map['station'],
       user: map['user'],
       deleted: map['deleted'],
+      createdAt: map['created_at']
     );
   }
 
@@ -41,6 +45,7 @@ class Outgoing {
       'station': this.station.toMap(),
       'user': this.user.toMap(),
       'deleted': this.deleted,
+      'created_at': this.createdAt,
     };
   }
 
@@ -52,6 +57,7 @@ class Outgoing {
       'station_id': this.station.id,
       'user_id': this.user.id,
       'deleted': this.deleted,
+      'created_at': this.createdAt,
     };
   }
 }

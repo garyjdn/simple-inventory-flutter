@@ -8,6 +8,7 @@ class Incoming {
   Item item;
   Supplier supplier;
   bool deleted;
+  DateTime createdAt;
 
   Incoming({
     this.id,
@@ -16,7 +17,9 @@ class Incoming {
     this.item,
     this.supplier,
     this.deleted = false,
-  });
+    createdAt,
+  }):
+    this.createdAt = createdAt ?? DateTime.now();
 
   factory Incoming.fromMap(Map<String, dynamic> map) {
     return Incoming(
@@ -26,6 +29,7 @@ class Incoming {
       item: map['item'],
       supplier: map['supplier'],
       deleted: map['deleted'],
+      createdAt: map['created_at'],
     );
   }
 
@@ -37,6 +41,7 @@ class Incoming {
       'item': this.item.toMap(),
       'supplier': this.supplier.toMap(),
       'deleted': this.deleted,
+      'created_at': this.createdAt,
     };
   }
 
@@ -46,7 +51,8 @@ class Incoming {
       'date': this.date,
       'item_id': this.item.id,
       'supplier_id': this.supplier.id,
-      'deleted': this.deleted
+      'deleted': this.deleted,
+      'created_at': this.createdAt,
     };
   }
 }
