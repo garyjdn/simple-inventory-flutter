@@ -47,6 +47,7 @@ class User extends Equatable {
       'image': this.image,
       'email': this.email,
       'role': this.role,
+      'deleted': this.deleted,
     };
   }
 
@@ -55,7 +56,8 @@ class User extends Equatable {
       'name': this.name,
       'image': this.image ?? "",
       'email': this.email,
-      'role': this.role
+      'role': this.role,
+      'deleted': this.deleted,
     };
   }
 
