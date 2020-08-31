@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:inventoryapp/data/data.dart';
+import 'package:inventoryapp/modules/inventory/screens/security/security.dart';
 import 'package:inventoryapp/modules/modules.dart';
 import 'package:inventoryapp/shared/shared.dart';
 import 'package:inventoryapp/widgets/components/custom_dialog.dart'
@@ -143,6 +144,14 @@ class _AppDrawerState extends State<AppDrawer> {
                           },
                           leading: Icon(FontAwesomeIcons.userAlt, size: 21),
                           title: Text('Profile')),
+                      ListTile(
+                          onTap: () {
+                            Navigator.of(context).pop();
+                            Navigator.of(context)
+                                .pushNamed(ChangePasswordFormScreen.routeName);
+                          },
+                          leading: Icon(FontAwesomeIcons.lock, size: 21),
+                          title: Text('Security')),
                       ListTile(
                           leading: Icon(FontAwesomeIcons.bookmark, size: 21),
                           title: Text('About')),

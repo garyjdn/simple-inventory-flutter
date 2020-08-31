@@ -191,37 +191,37 @@ class _TmpItemFormState extends State<TmpItemForm> {
                                     return null;
                                   },
                                 ),
-                                if (widget.action == 'edit')
-                                  Container(
-                                    margin: EdgeInsets.only(top: 20),
-                                    child: TextFormField(
-                                      controller: _stockCtrl,
-                                      decoration: InputDecoration(
-                                        labelText: 'Stock',
-                                        filled: true,
-                                        fillColor: Colors.white,
-                                        enabledBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Colors.blue[600],
-                                              width: 1),
-                                        ),
-                                        focusedBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Colors.blue[600],
-                                              width: 1),
-                                        ),
-                                      ),
-                                      validator: (value) {
-                                        if (value.isEmpty) {
-                                          return 'This field is required';
-                                        }
-                                        if (int.parse(value) < 0) {
-                                          return 'Stock must be greater or equal to 0';
-                                        }
-                                        return null;
-                                      },
-                                    ),
-                                  ),
+                                // if (widget.action == 'edit')
+                                //   Container(
+                                //     margin: EdgeInsets.only(top: 20),
+                                //     child: TextFormField(
+                                //       controller: _stockCtrl,
+                                //       decoration: InputDecoration(
+                                //         labelText: 'Stock',
+                                //         filled: true,
+                                //         fillColor: Colors.white,
+                                //         enabledBorder: OutlineInputBorder(
+                                //           borderSide: BorderSide(
+                                //               color: Colors.blue[600],
+                                //               width: 1),
+                                //         ),
+                                //         focusedBorder: OutlineInputBorder(
+                                //           borderSide: BorderSide(
+                                //               color: Colors.blue[600],
+                                //               width: 1),
+                                //         ),
+                                //       ),
+                                //       validator: (value) {
+                                //         if (value.isEmpty) {
+                                //           return 'This field is required';
+                                //         }
+                                //         if (int.parse(value) < 0) {
+                                //           return 'Stock must be greater or equal to 0';
+                                //         }
+                                //         return null;
+                                //       },
+                                //     ),
+                                //   ),
                               ],
                             ),
                           ),
@@ -265,9 +265,9 @@ class _TmpItemFormState extends State<TmpItemForm> {
                                           Item item = widget.item
                                             ..name = _nameCtrl.text
                                             ..category = _selectedCategory
-                                            ..unit = _selectedUnit
-                                            ..stock =
-                                                int.parse(_stockCtrl.text);
+                                            ..unit = _selectedUnit;
+                                            // ..stock =
+                                            //     int.parse(_stockCtrl.text);
                                           _itemFormBloc.add(
                                               EditItemButtonPressed(
                                                   item: item));

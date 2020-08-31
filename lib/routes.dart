@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:inventoryapp/modules/inventory/screens/request_item/request_item.dart';
 import 'package:inventoryapp/modules/inventory/screens/request_item_detail/request_item_detail_main_screen.dart';
+import 'package:inventoryapp/modules/inventory/screens/security/security.dart';
 import 'modules/modules.dart';
 
 Map<String, Widget Function(BuildContext)> routes = {
@@ -15,6 +16,7 @@ Map<String, Widget Function(BuildContext)> routes = {
   ReportScreen.routeName: (ctx) => ReportScreen(),
   PdfViewerPage.routeName: (ctx) => PdfViewerPage(),
   ProfileScreen.routeName: (ctx) => ProfileScreen(),
+  ChangePasswordFormScreen.routeName: (ctx) => ChangePasswordFormScreen(),
   RequestItemMainScreen.routeName: (ctx) => RequestItemMainScreen(),
   RequestItemDetailMainScreen.routeName: (ctx) => RequestItemDetailMainScreen(),
   StationMainScreen.routeName: (ctx) => StationMainScreen(),

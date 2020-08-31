@@ -1,5 +1,6 @@
 export './category/category_bloc.dart';
 export './category_form/category_form_bloc.dart';
+export './change_password/change_password_bloc.dart';
 export './dashboard/dashboard_bloc.dart';
 export './incoming/incoming_bloc.dart';
 export './incoming_form/incoming_form_bloc.dart';
