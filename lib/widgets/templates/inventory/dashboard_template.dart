@@ -12,7 +12,7 @@ class TmpDashboard extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.blue[50],
       appBar: AppBar(
-        backgroundColor: Colors.blueAccent[700],
+        backgroundColor: Color(0XFF133EAE),
         elevation: 0,
         title: Text('Inventory Dashboard'),
         centerTitle: true,
@@ -276,34 +276,6 @@ class TmpDashboard extends StatelessWidget {
                             ),
                           )),
                         ),
-                        // Container(
-                        //   padding: EdgeInsets.all(10),
-                        //   child: Center(
-                        //     child: Container(
-                        //       decoration: BoxDecoration(
-                        //         color: Colors.white,
-                        //         border: Border.all(color: Colors.white, width: 1.5),
-                        //         borderRadius: BorderRadius.circular(8)
-                        //       ),
-                        //       child: Column(
-                        //         mainAxisAlignment: MainAxisAlignment.center,
-                        //         children: <Widget>[
-                        //           Container(
-                        //             child: Center(
-                        //               child: Icon(
-                        //                 FontAwesomeIcons.exclamationCircle,
-                        //                 color: Color(0xff5a5a5a),
-                        //                 size: 32,
-                        //               )
-                        //             )
-                        //           ),
-                        //           SizedBox(height: 10),
-                        //           Text('Status')
-                        //         ],
-                        //       ),
-                        //     )
-                        //   ),
-                        // ),
                         Container(
                           padding: EdgeInsets.all(10),
                           child: Center(

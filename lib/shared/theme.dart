@@ -5,7 +5,7 @@ class AppTheme {
   AppTheme._();
 
   static final ThemeData lightTheme = ThemeData(
-    primaryColor: Color(0xFF0632AD),
+    primaryColor: Color(0XFF133EAE),
     scaffoldBackgroundColor: AppColors.background,
     brightness: Brightness.light,
     fontFamily: 'Roboto',

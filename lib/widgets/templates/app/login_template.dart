@@ -153,7 +153,7 @@ class _TmpLoginState extends State<TmpLogin> {
                                           width: double.infinity,
                                           child: RaisedButton(
                                               elevation: 0,
-                                              color: Colors.blueAccent[700],
+                                              color: Color(0XFF133EAE),
                                               onPressed: () {
                                                 if (!(state is LoginLoading)) {
                                                   _loginBloc.add(

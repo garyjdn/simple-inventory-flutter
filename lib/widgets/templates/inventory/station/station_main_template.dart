@@ -36,7 +36,7 @@ class TmpStationMain extends StatelessWidget {
     return Scaffold(
         backgroundColor: Colors.blue[50],
         appBar: AppBar(
-          backgroundColor: Colors.blueAccent[700],
+          backgroundColor: Color(0XFF133EAE),
           // automaticallyImplyLeading: true,
           leading: IconButton(
             onPressed: () => Navigator.of(context).pop(),
@@ -46,7 +46,7 @@ class TmpStationMain extends StatelessWidget {
           centerTitle: true,
         ),
         floatingActionButton: FloatingActionButton(
-          backgroundColor: Colors.blueAccent[700],
+          backgroundColor: Color(0XFF133EAE),
           child: Icon(Icons.add),
           onPressed: () async {
             final fetch = await Navigator.of(context).pushNamed(
@@ -84,7 +84,7 @@ class TmpStationMain extends StatelessWidget {
                           child: ListTile(
                             leading: Icon(
                               FontAwesomeIcons.building,
-                              color: Color(0xff5a5a5a),
+                              color: Color(0XFF133EAE),
                             ),
                             title: Text(station.name,
                                 style: Theme.of(context).textTheme.bodyText2),

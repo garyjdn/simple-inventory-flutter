@@ -57,7 +57,7 @@ class _AppDrawerState extends State<AppDrawer> {
                                   // height: 100,
                                   padding: EdgeInsets.all(15),
                                   width: double.infinity,
-                                  color: Colors.blueAccent[200],
+                                  color: Color(0XFF133EAE),
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,

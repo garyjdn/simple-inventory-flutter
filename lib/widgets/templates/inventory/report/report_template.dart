@@ -125,7 +125,7 @@ class _TmpReportState extends State<TmpReport> {
       child: Scaffold(
           backgroundColor: Colors.blue[50],
           appBar: AppBar(
-            backgroundColor: Colors.blueAccent[700],
+            backgroundColor: Color(0XFF133EAE),
             leading: IconButton(
               onPressed: () => Navigator.of(context).pop(),
               icon: Icon(Icons.arrow_back_ios),
@@ -153,11 +153,11 @@ class _TmpReportState extends State<TmpReport> {
                                   fillColor: Colors.white,
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                        color: Colors.blue[600], width: 1),
+                                        color: Color(0XFF133EAE), width: 1),
                                   ),
                                   focusedBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                        color: Colors.blue[600], width: 1),
+                                        color: Color(0XFF133EAE), width: 1),
                                   )),
                               initialValue:
                                   _selectedStartDate ?? DateTime.now(),
@@ -188,11 +188,11 @@ class _TmpReportState extends State<TmpReport> {
                                   fillColor: Colors.white,
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                        color: Colors.blue[600], width: 1),
+                                        color: Color(0XFF133EAE), width: 1),
                                   ),
                                   focusedBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                        color: Colors.blue[600], width: 1),
+                                        color: Color(0XFF133EAE), width: 1),
                                   )),
                               initialValue: _selectedEndDate ?? DateTime.now(),
                               format: DateFormat("yyyy-MM-dd"),
@@ -228,12 +228,12 @@ class _TmpReportState extends State<TmpReport> {
                             filled: true,
                             fillColor: Colors.white,
                             enabledBorder: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: Colors.blue[600], width: 1),
+                              borderSide: BorderSide(
+                                  color: Color(0XFF133EAE), width: 1),
                             ),
                             focusedBorder: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: Colors.blue[600], width: 1),
+                              borderSide: BorderSide(
+                                  color: Color(0XFF133EAE), width: 1),
                             )),
                         onChanged: (value) =>
                             setState(() => _selectedTransaction = value),
@@ -249,7 +249,7 @@ class _TmpReportState extends State<TmpReport> {
                         width: double.infinity,
                         child: RaisedButton(
                             elevation: 0,
-                            color: Colors.blueAccent[700],
+                            color: Color(0XFF133EAE),
                             onPressed: () {
                               if (_formKey.currentState.validate()) {
                                 _generatePDF(

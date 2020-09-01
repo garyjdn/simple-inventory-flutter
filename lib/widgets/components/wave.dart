@@ -14,7 +14,7 @@ class Wave extends StatelessWidget {
       config: CustomConfig(
         colors: [
           Colors.blue[100],
-          Colors.blue[200],
+          Colors.blue[300],
           Colors.blue[200],
           Colors.blue[300],
         ],
@@ -31,7 +31,7 @@ class Wave extends StatelessWidget {
         // gradientEnd: Alignment.centerRight,
       ),
       waveAmplitude: 1.0,
-      backgroundColor: Colors.blue[100],
+      backgroundColor: Colors.blue[50],
       size: Size(double.infinity, height),
     );
   }
