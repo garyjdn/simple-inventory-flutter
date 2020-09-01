@@ -63,7 +63,7 @@ class _TmpOutgoingFormState extends State<TmpOutgoingForm> {
           resizeToAvoidBottomInset: false,
           backgroundColor: Colors.blue[50],
           appBar: AppBar(
-            backgroundColor: Colors.blueAccent[700],
+            backgroundColor: Color(0XFF133EAE),
             leading: IconButton(
               onPressed: () => Navigator.of(context).pop(),
               icon: Icon(Icons.arrow_back_ios),
@@ -121,11 +121,11 @@ class _TmpOutgoingFormState extends State<TmpOutgoingForm> {
                                       fillColor: Colors.white,
                                       enabledBorder: OutlineInputBorder(
                                         borderSide: BorderSide(
-                                            color: Colors.blue[600], width: 1),
+                                            color: Color(0XFF133EAE), width: 1),
                                       ),
                                       focusedBorder: OutlineInputBorder(
                                         borderSide: BorderSide(
-                                            color: Colors.blue[600], width: 1),
+                                            color: Color(0XFF133EAE), width: 1),
                                       )),
                                   initialValue: _selectedDate,
                                   format: DateFormat("yyyy-MM-dd"),
@@ -161,11 +161,11 @@ class _TmpOutgoingFormState extends State<TmpOutgoingForm> {
                                       fillColor: Colors.white,
                                       enabledBorder: OutlineInputBorder(
                                         borderSide: BorderSide(
-                                            color: Colors.blue[600], width: 1),
+                                            color: Color(0XFF133EAE), width: 1),
                                       ),
                                       focusedBorder: OutlineInputBorder(
                                         borderSide: BorderSide(
-                                            color: Colors.blue[600], width: 1),
+                                            color: Color(0XFF133EAE), width: 1),
                                       )),
                                   onChanged: (value) =>
                                       setState(() => _selectedUser = value),
@@ -191,11 +191,11 @@ class _TmpOutgoingFormState extends State<TmpOutgoingForm> {
                                       fillColor: Colors.white,
                                       enabledBorder: OutlineInputBorder(
                                         borderSide: BorderSide(
-                                            color: Colors.blue[600], width: 1),
+                                            color: Color(0XFF133EAE), width: 1),
                                       ),
                                       focusedBorder: OutlineInputBorder(
                                         borderSide: BorderSide(
-                                            color: Colors.blue[600], width: 1),
+                                            color: Color(0XFF133EAE), width: 1),
                                       )),
                                   onChanged: (value) =>
                                       setState(() => _selectedItem = value),
@@ -229,11 +229,11 @@ class _TmpOutgoingFormState extends State<TmpOutgoingForm> {
                                       fillColor: Colors.white,
                                       enabledBorder: OutlineInputBorder(
                                         borderSide: BorderSide(
-                                            color: Colors.blue[600], width: 1),
+                                            color: Color(0XFF133EAE), width: 1),
                                       ),
                                       focusedBorder: OutlineInputBorder(
                                         borderSide: BorderSide(
-                                            color: Colors.blue[600], width: 1),
+                                            color: Color(0XFF133EAE), width: 1),
                                       )),
                                   onChanged: (value) =>
                                       setState(() => _selectedStation = value),
@@ -254,11 +254,11 @@ class _TmpOutgoingFormState extends State<TmpOutgoingForm> {
                                     fillColor: Colors.white,
                                     enabledBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
-                                          color: Colors.blue[600], width: 1),
+                                          color: Color(0XFF133EAE), width: 1),
                                     ),
                                     focusedBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
-                                          color: Colors.blue[600], width: 1),
+                                          color: Color(0XFF133EAE), width: 1),
                                     ),
                                   ),
                                   validator: (String value) {
@@ -285,7 +285,7 @@ class _TmpOutgoingFormState extends State<TmpOutgoingForm> {
                                 child: RaisedButton(
                                     onPressed: () {},
                                     elevation: 0,
-                                    color: Colors.blueAccent[700],
+                                    color: Color(0XFF133EAE),
                                     child: SizedBox(
                                       width: 20,
                                       height: 20,
@@ -334,7 +334,7 @@ class _TmpOutgoingFormState extends State<TmpOutgoingForm> {
                                       }
                                     },
                                     elevation: 0,
-                                    color: Colors.blueAccent[700],
+                                    color: Color(0XFF133EAE),
                                     child: widget.action == 'create'
                                         ? Text('Create',
                                             style:

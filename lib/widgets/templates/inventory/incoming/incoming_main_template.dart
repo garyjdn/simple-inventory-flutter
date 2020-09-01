@@ -41,12 +41,17 @@ class _TmpIncomingMainState extends State<TmpIncomingMain> {
   }
 
   search(List<Incoming> source, String keyword) {
-    List<Incoming> incomings = [...source.where((incoming) {
-      return incoming.item.name.toLowerCase().contains(keyword.toLowerCase()) 
-          || incoming.supplier.name.toLowerCase().contains(keyword.toLowerCase());
-    }).toList()];
-    if(mounted)
-    setState(() => filteredIncomings = incomings);
+    List<Incoming> incomings = [
+      ...source.where((incoming) {
+        return incoming.item.name
+                .toLowerCase()
+                .contains(keyword.toLowerCase()) ||
+            incoming.supplier.name
+                .toLowerCase()
+                .contains(keyword.toLowerCase());
+      }).toList()
+    ];
+    if (mounted) setState(() => filteredIncomings = incomings);
   }
 
   @override
@@ -64,7 +69,7 @@ class _TmpIncomingMainState extends State<TmpIncomingMain> {
       child: Scaffold(
           backgroundColor: Colors.blue[50],
           appBar: AppBar(
-            backgroundColor: Colors.blueAccent[700],
+            backgroundColor: Color(0XFF133EAE),
             // automaticallyImplyLeading: true,
             leading: IconButton(
               onPressed: () => Navigator.of(context).pop(),
@@ -74,7 +79,7 @@ class _TmpIncomingMainState extends State<TmpIncomingMain> {
             centerTitle: true,
           ),
           floatingActionButton: FloatingActionButton(
-            backgroundColor: Colors.blueAccent[700],
+            backgroundColor: Color(0XFF133EAE),
             child: Icon(Icons.add),
             onPressed: () async {
               final fetch = await Navigator.of(context).pushNamed(
@@ -114,142 +119,100 @@ class _TmpIncomingMainState extends State<TmpIncomingMain> {
                   TextFormField(
                     controller: _searchCtrl,
                     decoration: InputDecoration(
-                      
                       hintText: 'Search',
                       filled: true,
                       fillColor: Colors.white,
                       prefixIcon: Icon(Icons.search),
                       enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                            color: Colors.white, width: 1),
+                        borderSide: BorderSide(color: Colors.white, width: 1),
                       ),
                       focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                            color: Colors.white, width: 1),
+                        borderSide: BorderSide(color: Colors.white, width: 1),
                       ),
                     ),
                     onChanged: (value) {
-                      if(value.isNotEmpty) {
+                      if (value.isNotEmpty) {
                         if (_debounce?.isActive ?? false) _debounce.cancel();
-                        _debounce = Timer(const Duration(milliseconds: 500), () => search(state.incomings, value));
+                        _debounce = Timer(const Duration(milliseconds: 500),
+                            () => search(state.incomings, value));
                       } else {
                         setState(() => filteredIncomings = state.incomings);
                       }
                     },
                   ),
-
                   SizedBox(height: 15),
-
                   ...filteredIncomings
-                    .map((incoming) => Card(
-                        elevation: 0,
-                        child: Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                        Text(incoming.item.name),
-                                        SizedBox(height: 5),
-                                        Text(DateFormat('dd/MM/yyyy')
-                                            .format(incoming.date)),
-                                      ],
-                                    ),
-                                    Column(
-                                      children: <Widget>[
-                                        Text(incoming.amount.toString()),
-                                        SizedBox(height: 5),
-                                        Text(incoming.item.unit.name)
-                                      ],
-                                    ),
-                                    Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: <Widget>[
-                                        IconButton(
-                                          onPressed: () =>
-                                              deleteDialog(context, incoming),
-                                          icon: Icon(FontAwesomeIcons.trash),
-                                          iconSize: 18,
-                                        ),
-                                        // SizedBox(width: 8),
-                                        IconButton(
-                                          onPressed: () async {
-                                            final fetch = await Navigator.of(
-                                                    context)
-                                                .pushNamed(
-                                                    IncomingFormScreen.routeName,
-                                                    arguments:
-                                                        IncomingFormScreenArguments(
-                                                            title:
-                                                                'Edit Incoming',
-                                                            action: 'edit',
-                                                            incoming: incoming));
+                      .map((incoming) => Card(
+                          elevation: 0,
+                          child: Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: <Widget>[
+                                          Text(incoming.item.name),
+                                          SizedBox(height: 5),
+                                          Text(DateFormat('dd/MM/yyyy')
+                                              .format(incoming.date)),
+                                        ],
+                                      ),
+                                      Column(
+                                        children: <Widget>[
+                                          Text(incoming.amount.toString()),
+                                          SizedBox(height: 5),
+                                          Text(incoming.item.unit.name)
+                                        ],
+                                      ),
+                                      Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: <Widget>[
+                                          IconButton(
+                                            onPressed: () =>
+                                                deleteDialog(context, incoming),
+                                            icon: Icon(FontAwesomeIcons.trash),
+                                            iconSize: 18,
+                                          ),
+                                          // SizedBox(width: 8),
+                                          IconButton(
+                                            onPressed: () async {
+                                              final fetch = await Navigator.of(
+                                                      context)
+                                                  .pushNamed(
+                                                      IncomingFormScreen
+                                                          .routeName,
+                                                      arguments:
+                                                          IncomingFormScreenArguments(
+                                                              title:
+                                                                  'Edit Incoming',
+                                                              action: 'edit',
+                                                              incoming:
+                                                                  incoming));
 
-                                            if (fetch != null && fetch)
-                                              _incomingBloc
-                                                  .add(LoadIncomingStarted());
-                                          },
-                                          icon: Icon(FontAwesomeIcons.solidEdit),
-                                          iconSize: 18,
-                                        )
-                                      ],
-                                    )
-                                  ],
-                                ),
-                                Divider(),
-                                Text(incoming.supplier.name)
-                              ]),
-                        )))
-                    .toList(),
+                                              if (fetch != null && fetch)
+                                                _incomingBloc
+                                                    .add(LoadIncomingStarted());
+                                            },
+                                            icon: Icon(
+                                                FontAwesomeIcons.solidEdit),
+                                            iconSize: 18,
+                                          )
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                  Divider(),
+                                  Text(incoming.supplier.name)
+                                ]),
+                          )))
+                      .toList(),
                 ],
-                // Card(
-                //   elevation: 0,
-                //   child: ListTile(
-                //     leading: Icon(
-                //       FontAwesomeIcons.box,
-                //       color: Color(0xff5a5a5a),
-                //     ),
-                //     title: Text(
-                //       incoming.item.name,
-                //       style: Theme.of(context).textTheme.bodyText2
-                //     ),
-                //     trailing: Row(
-                //       mainAxisSize: MainAxisSize.min,
-                //       children: <Widget>[
-                //         IconButton(
-                //           onPressed: () => deleteDialog(context, incoming),
-                //           icon: Icon(FontAwesomeIcons.trash),
-                //           iconSize: 18,
-                //         ),
-                //         // SizedBox(width: 8),
-                //         IconButton(
-                //           onPressed: () async {
-                //             final fetch = await Navigator
-                //               .of(context)
-                //               .pushNamed(
-                //                 IncomingFormScreen.routeName,
-                //                 arguments: IncomingFormScreenArguments(
-                //                   title: 'Edit Incoming',
-                //                   action: 'edit',
-                //                   incoming: incoming));
-
-                //             if(fetch != null && fetch)
-                //             _incomingBloc.add(LoadIncomingStarted());
-                //           },
-                //           icon: Icon(FontAwesomeIcons.solidEdit),
-                //           iconSize: 18,
-                //         )
-                //       ],
-                //     ),
-                //   ),
-                // )).toList()
               );
             } else {
               return Container();

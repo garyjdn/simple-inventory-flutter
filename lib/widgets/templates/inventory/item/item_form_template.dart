@@ -60,7 +60,7 @@ class _TmpItemFormState extends State<TmpItemForm> {
           resizeToAvoidBottomInset: false,
           backgroundColor: Colors.blue[50],
           appBar: AppBar(
-            backgroundColor: Colors.blueAccent[700],
+            backgroundColor: Color(0XFF133EAE),
             leading: IconButton(
               onPressed: () => Navigator.of(context).pop(),
               icon: Icon(Icons.arrow_back_ios),
@@ -116,11 +116,11 @@ class _TmpItemFormState extends State<TmpItemForm> {
                                     fillColor: Colors.white,
                                     enabledBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
-                                          color: Colors.blue[600], width: 1),
+                                          color: Color(0XFF133EAE), width: 1),
                                     ),
                                     focusedBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
-                                          color: Colors.blue[600], width: 1),
+                                          color: Color(0XFF133EAE), width: 1),
                                     ),
                                   ),
                                   validator: (value) {
@@ -146,11 +146,11 @@ class _TmpItemFormState extends State<TmpItemForm> {
                                       fillColor: Colors.white,
                                       enabledBorder: OutlineInputBorder(
                                         borderSide: BorderSide(
-                                            color: Colors.blue[600], width: 1),
+                                            color: Color(0XFF133EAE), width: 1),
                                       ),
                                       focusedBorder: OutlineInputBorder(
                                         borderSide: BorderSide(
-                                            color: Colors.blue[600], width: 1),
+                                            color: Color(0XFF133EAE), width: 1),
                                       )),
                                   onChanged: (value) =>
                                       setState(() => _selectedCategory = value),
@@ -176,11 +176,11 @@ class _TmpItemFormState extends State<TmpItemForm> {
                                       fillColor: Colors.white,
                                       enabledBorder: OutlineInputBorder(
                                         borderSide: BorderSide(
-                                            color: Colors.blue[600], width: 1),
+                                            color: Color(0XFF133EAE), width: 1),
                                       ),
                                       focusedBorder: OutlineInputBorder(
                                         borderSide: BorderSide(
-                                            color: Colors.blue[600], width: 1),
+                                            color: Color(0XFF133EAE), width: 1),
                                       )),
                                   onChanged: (value) =>
                                       setState(() => _selectedUnit = value),
@@ -191,37 +191,6 @@ class _TmpItemFormState extends State<TmpItemForm> {
                                     return null;
                                   },
                                 ),
-                                // if (widget.action == 'edit')
-                                //   Container(
-                                //     margin: EdgeInsets.only(top: 20),
-                                //     child: TextFormField(
-                                //       controller: _stockCtrl,
-                                //       decoration: InputDecoration(
-                                //         labelText: 'Stock',
-                                //         filled: true,
-                                //         fillColor: Colors.white,
-                                //         enabledBorder: OutlineInputBorder(
-                                //           borderSide: BorderSide(
-                                //               color: Colors.blue[600],
-                                //               width: 1),
-                                //         ),
-                                //         focusedBorder: OutlineInputBorder(
-                                //           borderSide: BorderSide(
-                                //               color: Colors.blue[600],
-                                //               width: 1),
-                                //         ),
-                                //       ),
-                                //       validator: (value) {
-                                //         if (value.isEmpty) {
-                                //           return 'This field is required';
-                                //         }
-                                //         if (int.parse(value) < 0) {
-                                //           return 'Stock must be greater or equal to 0';
-                                //         }
-                                //         return null;
-                                //       },
-                                //     ),
-                                //   ),
                               ],
                             ),
                           ),
@@ -266,8 +235,8 @@ class _TmpItemFormState extends State<TmpItemForm> {
                                             ..name = _nameCtrl.text
                                             ..category = _selectedCategory
                                             ..unit = _selectedUnit;
-                                            // ..stock =
-                                            //     int.parse(_stockCtrl.text);
+                                          // ..stock =
+                                          //     int.parse(_stockCtrl.text);
                                           _itemFormBloc.add(
                                               EditItemButtonPressed(
                                                   item: item));
@@ -275,7 +244,7 @@ class _TmpItemFormState extends State<TmpItemForm> {
                                       }
                                     },
                                     elevation: 0,
-                                    color: Colors.blueAccent[700],
+                                    color: Color(0XFF133EAE),
                                     child: widget.action == 'create'
                                         ? Text('Create',
                                             style:

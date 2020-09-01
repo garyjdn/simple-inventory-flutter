@@ -51,7 +51,7 @@ class _TmpCategoryFormState extends State<TmpCategoryForm> {
       child: Scaffold(
           backgroundColor: Colors.blue[50],
           appBar: AppBar(
-            backgroundColor: Colors.blueAccent[700],
+            backgroundColor: Color(0XFF133EAE),
             leading: IconButton(
               onPressed: () => Navigator.of(context).pop(),
               icon: Icon(Icons.arrow_back_ios),
@@ -88,11 +88,11 @@ class _TmpCategoryFormState extends State<TmpCategoryForm> {
                                   fillColor: Colors.white,
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                        color: Colors.blue[600], width: 1),
+                                        color: Color(0XFF133EAE), width: 1),
                                   ),
                                   focusedBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                        color: Colors.blue[600], width: 1),
+                                        color: Color(0XFF133EAE), width: 1),
                                   )),
                               validator: (value) {
                                 if (value.isEmpty) {
@@ -114,7 +114,7 @@ class _TmpCategoryFormState extends State<TmpCategoryForm> {
                             child: RaisedButton(
                                 onPressed: () {},
                                 elevation: 0,
-                                color: Colors.blueAccent[700],
+                                color: Color(0XFF133EAE),
                                 child: SizedBox(
                                   width: 20,
                                   height: 20,
@@ -146,7 +146,7 @@ class _TmpCategoryFormState extends State<TmpCategoryForm> {
                                 }
                               },
                               elevation: 0,
-                              color: Colors.blueAccent[700],
+                              color: Color(0XFF133EAE),
                               child: widget.action == 'create'
                                   ? Text('Create',
                                       style: TextStyle(color: Colors.white))

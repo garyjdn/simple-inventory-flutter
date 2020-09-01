@@ -76,7 +76,7 @@ class TmpRequestItemDetailMain extends StatelessWidget {
     return Scaffold(
         backgroundColor: Colors.blue[50],
         appBar: AppBar(
-          backgroundColor: Colors.blueAccent[700],
+          backgroundColor: Color(0XFF133EAE),
           // automaticallyImplyLeading: true,
           leading: IconButton(
             onPressed: () => Navigator.of(context).pop(),
@@ -95,7 +95,7 @@ class TmpRequestItemDetailMain extends StatelessWidget {
                     requestItem.requestStatus == RequestStatus.WAITING &&
                     authState.user.role == 'Staff') {
                   return FloatingActionButton(
-                    backgroundColor: Colors.blueAccent[700],
+                    backgroundColor: Color(0XFF133EAE),
                     child: Icon(Icons.add),
                     onPressed: () {
                       showForm(context, 'Add', state.items, requestItem,
@@ -206,7 +206,7 @@ class TmpRequestItemDetailMain extends StatelessWidget {
                                                   requestItem: ri));
                                         }
                                       },
-                                      color: Colors.blue[300],
+                                      color: Colors.green,
                                       child: Text('Approve',
                                           style: TextStyle(
                                               fontSize: 14,
@@ -228,7 +228,7 @@ class TmpRequestItemDetailMain extends StatelessWidget {
                                                   requestItem: ri));
                                         }
                                       },
-                                      color: Colors.red[300],
+                                      color: Colors.red,
                                       child: Text('Reject',
                                           style: TextStyle(
                                               fontSize: 14,
