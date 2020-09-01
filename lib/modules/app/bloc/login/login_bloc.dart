@@ -5,7 +5,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:inventoryapp/data/data.dart';
-import 'package:connectivity/connectivity.dart';
+// import 'package:connectivity/connectivity.dart';
 
 part 'login_event.dart';
 part 'login_state.dart';
@@ -30,10 +30,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     } else if(event.password.length < 6) {
       yield LoginFailure(errorMsg: 'Password length must be at least 6 characters');
     } else {
-      var connectivityResult = await (Connectivity().checkConnectivity());
-      if (connectivityResult == ConnectivityResult.none) {
-        yield LoginFailure(errorMsg: 'No internet, please check your phone connection.');
-      } else {
+      // var connectivityResult = await (Connectivity().checkConnectivity());
+      // if (connectivityResult == ConnectivityResult.none) {
+      //   yield LoginFailure(errorMsg: 'No internet, please check your phone connection.');
+      // } else {
         try {
           // check if network have internet access by ping google
           final result = await InternetAddress.lookup('google.com');
@@ -60,7 +60,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         } on SocketException catch (_) {
           yield LoginFailure(errorMsg: 'No internet, please check your phone connection.');
         }
-      }
+      // }
     }
   }
 }

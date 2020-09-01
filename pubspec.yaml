@@ -33,7 +33,6 @@ dependencies:
   shared_preferences: ^0.5.8
   shimmer: ^1.1.1
   font_awesome_flutter: ^8.8.1
-  connectivity: '>=0.4.8+6 <2.0.0'
   firebase_core: ^0.4.5
   firebase_auth: ^0.16.1
   firebase_storage: ^3.1.6
