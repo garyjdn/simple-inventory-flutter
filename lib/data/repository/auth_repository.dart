@@ -38,5 +38,7 @@ class AuthRepository {
     return user;
   }
 
-  Future<void> logout() {}
+  Future<void> logout() async {
+    return await AuthSharedPref.deleteData();
+  }
 }
