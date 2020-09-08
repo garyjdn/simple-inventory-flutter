@@ -31,6 +31,7 @@ class _TmpUserFormState extends State<TmpUserForm> {
     'Admin',
     'Operator',
     'Staff',
+    'Manager'
   ];
 
   @override

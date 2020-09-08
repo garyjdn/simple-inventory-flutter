@@ -105,7 +105,8 @@ class _AppDrawerState extends State<AppDrawer> {
                           }),
                       ListTile(
                           onTap: () async {
-                            if (authState.user.role == 'Admin') {
+                            if (authState.user.role == 'Admin'
+                            || authState.user.role == 'Manager') {
                               Navigator.of(context).pop();
                               Navigator.of(context)
                                   .pushNamed(UserMainScreen.routeName);
@@ -121,7 +122,8 @@ class _AppDrawerState extends State<AppDrawer> {
                           title: Text('User')),
                       ListTile(
                           onTap: () async {
-                            if (authState.user.role == 'Admin') {
+                            if (authState.user.role == 'Admin'
+                            || authState.user.role == 'Manager') {
                               Navigator.of(context).pop();
                               Navigator.of(context)
                                   .pushNamed(StationMainScreen.routeName);
